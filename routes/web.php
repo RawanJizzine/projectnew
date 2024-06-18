@@ -43,17 +43,8 @@ Route::post('/send-email-letter', [FrontController::class, 'saveEmailLetter'])->
 Route::post('/send-message-disscusion', [FrontController::class, 'sendMessageContact'])->name('send.message.contact');
 Route::get('/newsletter', [FrontController::class, 'messages'])->name('new-letter');
 Route::post('/get-available-times', [FrontController::class, 'getAvailableTimes'])->name('get-available-times');
-
-
-
-
-
-
-
-
-
 Route::middleware(['auth'])->group(function () {
- Route::get('/login-front-page', [FrontController::class, 'showFrontPage'])->name('login-to-front');
+Route::get('/login-front-page', [FrontController::class, 'showFrontPage'])->name('login-to-front');
 Route::get('/payment-page', [FrontController::class, 'showPaymentPage'])->name('payment-page');
 Route::post('/subscription-plan-save', [FrontController::class, 'processSubscription'])->name('process-subscription');
 Route::get('/admin', [FrontController::class, 'adminDashboard'])->name('admin-data');

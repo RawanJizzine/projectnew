@@ -45,7 +45,7 @@
                         <x-slot name="title"></x-slot>
                         <x-slot name="body">
                             <div class="row g-3">
-                                <input type="hidden" name="id" value="{{ $file->id ?? '' }}">
+                                <input type="hidden" name="file[{{ $index }}][id]" value="{{ $file->id ?? '' }}">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="title">Title of file</label>
                                     <input type="text" id="titleoffile{{ $index }}"
@@ -233,16 +233,16 @@
 
     // Show icons for preloaded files
     @if($patient->filesPatientInfo->isNotEmpty())
-        @foreach($patient->filesPatientInfo as $index => $file)
-            const fileIconId = 'file-icon{{ $index }}';
+    @foreach($patient->filesPatientInfo as $index => $file)
+        (function(fileIconId, filePath) {
             const fileIcon = document.getElementById(fileIconId);
-            const filePath = '{{ $file->path }}';
             const fileExtension = filePath.split('.').pop();
             fileIcon.innerHTML = getFileIconByExtension(fileExtension);
             fileIcon.onclick = function () {
                 window.open('/files/' + filePath, '_blank');
             };
-        @endforeach
-    @endif
+        })('file-icon{{ $index }}', '{{ $file->path }}');
+    @endforeach
+@endif
 });
 </script>

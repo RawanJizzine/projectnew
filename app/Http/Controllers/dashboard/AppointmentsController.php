@@ -145,21 +145,23 @@ public function showAppointmentsCalanderPage($id)
     }
     public function storePatientData(Request $request)
     {
-        $request->validate([
-            'patientfullname' => 'required|string|max:255',
-            'phonenumber' => 'required|numeric',
-            'age' => 'required|numeric',
-            'dateofbirth' => 'required|date',
-            'width' => 'required|numeric',
-            'height' => 'required|numeric',
-            'file.*.title' => 'required|string|max:255',
-            'file.*.file' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:4000'
-        ]);
-    
+        
+       
+       
         if ($request->id) {
-            // Update existing patient record
+            $request->validate([
+                'patientfullname' => 'required|string|max:255',
+                'phonenumber' => 'required|numeric',
+                'age' => 'required|numeric',
+                'dateofbirth' => 'required|date',
+                'width' => 'required|numeric',
+                'height' => 'required|numeric',
+                'file.*.title' => 'required|string|max:255',
+                
+            ]);
             $patient = Patient::find($request->id);
             if ($patient) {
+                
                 $patient->update([
                     'fullname' => $request->patientfullname,
                     'phonenumber' => $request->phonenumber,
@@ -170,26 +172,32 @@ public function showAppointmentsCalanderPage($id)
                     'user_id' => Auth::id(),
                 ]);
     
-              
+                
     
-                // Process files for update
+              
                 foreach ($request->file as $file) {
                     if (isset($file['id'])) {
                         // Update existing file record
+                      
                         $existingFile = FilePatient::find($file['id']);
+                       
                         if ($existingFile) {
-                            // Delete the old file if a new one is uploaded
-                            $filePath = public_path('files/' . $existingFile->path);
-                            if (file_exists($filePath)) {
-                                unlink($filePath);
-                            }
+                          
+                            if (isset($file['file'])        ) {
+                         
                             $path = time() . '.' . $file['file']->extension();
                             $file['file']->move(public_path('files'), $path);
-                            
+                           
                             $existingFile->update([
                                 'title' => $file['title'],
                                 'path' => $path,
                             ]);
+                        }else{
+                            $existingFile->update([
+                                'title' => $file['title'],
+                               
+                            ]);  
+                        }
                         }
                     } else {
                         // Create new file record
@@ -205,6 +213,16 @@ public function showAppointmentsCalanderPage($id)
                 }
             }
         } else {
+            $request->validate([
+                'patientfullname' => 'required|string|max:255',
+                'phonenumber' => 'required|numeric',
+                'age' => 'required|numeric',
+                'dateofbirth' => 'required|date',
+                'width' => 'required|numeric',
+                'height' => 'required|numeric',
+                'file.*.title' => 'required|string|max:255',
+                'file.*.file' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:10000'
+            ]);
             // Create new patient record
             $patient = Patient::create([
                 'fullname' => $request->patientfullname,
