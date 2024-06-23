@@ -10,9 +10,9 @@
 
     <div class="d-flex justify-content-between">
         <h3>Ads Fun Data</h3>
-        <button type="button" class="btn btn-primary" style="width: 170px; height: 40px;" data-target="#add_fun_modal"
+        <button type="button" class="btn btn-primary" style="width: 150px; height: 40px;" data-target="#add_fun_modal"
             data-toggle="modal">
-            Create New Fun
+        create
         </button>
     </div>
     <div class="modal fade" id="add_fun_modal" tabindex="-1" role="dialog" aria-labelledby="addFunModalLabel"
@@ -66,7 +66,7 @@
     </div>
     <x-card>
         <x-slot name="body">
-            <div>
+            <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>

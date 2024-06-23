@@ -26,7 +26,12 @@ $subscription = \App\Models\SubscriptionPlan::where('user_id', $userId )->first(
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-    
+      <li class="menu-item">
+        <a href="{{route('ecommerce-page')}}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <div data-i18n=" Ads Home Data">eCommerce </div>
+        </a>
+      </li>
        
       <li class="menu-item">
         <a href="{{route('dashboard-home-page')}}" class="menu-link">

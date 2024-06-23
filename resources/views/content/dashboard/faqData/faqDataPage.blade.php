@@ -73,9 +73,9 @@
 
     <div class="d-flex justify-content-between">
         <h3>Ads Faqs Data</h3>
-        <button type="button" class="btn btn-primary" style="width: 170px; height: 40px;" data-target="#add_faq_modal"
+        <button type="button" class="btn btn-primary" style="width: 100px; height: 40px;" data-target="#add_faq_modal"
             data-toggle="modal">
-            Create Faq
+            create 
         </button>
     </div>
     <div class="modal fade" id="add_faq_modal" tabindex="-1" role="dialog" aria-labelledby="addFaqModalLabel"
@@ -110,12 +110,12 @@
 
     <x-card>
         <x-slot name="body">
-            <div>
+            <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
                             <th>title</th>
-                            <th>description</th>
+                           
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -127,9 +127,7 @@
                                     <input name="" readonly class="form-control" value="{{ $data->title }}">
                                 </td>
 
-                                <td>
-                                    <textarea name="" readonly class="form-control" cols="4" rows="6">{{ $data->description }}</textarea>
-                                </td>
+                               
 
 
                                 <td>

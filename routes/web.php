@@ -17,7 +17,10 @@ use App\Http\Controllers\dashboard\FunFactsController;
 use App\Http\Controllers\dashboard\FaqController;
 use App\Http\Controllers\dashboard\HomeController;
 use App\Http\Controllers\dashboard\LogoController;
-use App\Http\Controllers\dashboard\AppointmentsController;;
+use App\Http\Controllers\dashboard\AppointmentsController;
+use App\Http\Controllers\dashboard\EcommerceController;
+
+;
 use App\Http\Controllers\dashboard\PricingPlanController;
 use App\Http\Controllers\ProductController;
 use App\Models\HomeData;
@@ -118,12 +121,17 @@ Route::post('/home-data-save', [HomeController::class, 'createHomeData'])->name(
 Route::get('/contact', [ContactController::class, 'index'])->name('dashboard-contact-page');
 Route::post('/create-custom-data', [ContactController::class, 'createContactData'])->name('contact-save-data');
 
-//
+//appoi..
 Route::get('/appointment-section', [AppointmentsController::class, 'indexFront'])->name('appointment-section');
 Route::get('/appointment/{id}', [AppointmentsController::class, 'indexAppointments'])->name('appointment-page');
 Route::get('/appointment-dashboard', [AppointmentsController::class, 'index'])->name('appointment-dashboard-page');
 Route::post('/appointments', [AppointmentsController::class, 'store'])->name('appointments.store');
 Route::delete('/appointments/{id}', [AppointmentsController::class, 'destroy'])->name('appointments.destroy');
+Route::get('/appointment-availability', [AppointmentsController::class, 'indexAppointmentsAvailability'])->name('appointment-availability');
+Route::post('/save-appointment-availability', [AppointmentsController::class, 'saveAppointmentsAvailability'])->name('save-appointment-availability');
+Route::put('/updateappavailability/{id}', [AppointmentsController::class, 'updateAppointmentsAvailability'])->name('update-appointment-availability');
+Route::delete('/deleteappavailability/{id}', [AppointmentsController::class, 'destroyAppointmentsAvailability'])->name('appavailability.delete');
+
 //product 
 Route::get('/productPage', [ProductController::class, 'index'])->name('product-page');
 Route::get('/productDashboardPage', [ProductController::class, 'indexDashboard'])->name('product-page-dashboard');
@@ -156,3 +164,8 @@ Route::delete('/order-dashboard-delete/{id}', [ProductController::class, 'destro
 //patientData
 Route::get('/patientData', [AppointmentsController::class, 'showpatientData'])->name('patient-data-page');
 Route::post('/save-patient-info', [AppointmentsController::class, 'storePatientData'])->name('files.store');
+
+//ecommerce
+Route::get('/dashboard/ecommerce', [EcommerceController::class, 'index'])->name('ecommerce-page');
+Route::post('/get-statics-info', [EcommerceController::class, 'getOrders'])->name('get-statics-info');
+Route::get('/appointmentsdate/{date}', [EcommerceController::class, 'getAppointmentsByDate']);

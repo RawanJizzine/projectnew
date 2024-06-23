@@ -2,24 +2,48 @@
 @extends('layouts.layoutMaster')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    @media (max-width: 576px) {
+        #sendMessage {
+            padding: 10px;
+            
+        }
 
+        #sendMessage textarea {
+            width: 100%;
+         
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: 1rem;
+           
+        }
+    }
+    .btn {
+          
+            margin-top: 1rem;
+           
+        }
+</style>
 
 @section('content')
-    <x-card>
-        <x-slot name="title">
-            Send New Letter To Subscriber
-        </x-slot>
+<x-card>
+    <x-slot name="title">
+        Send New Letter To Subscriber
+    </x-slot>
 
-        <x-slot name="body">
-            <form id="sendMessage" action="{{ route('send.email') }}" method="post">
-                @csrf
-                <label for="message">Message:</label><br>
-                <textarea name="message" rows="6" cols="50" required></textarea><br><br>
-                <br>
-                <button type="submit" class="btn btn-primary" name="submit">Send to Emails</button>
-            </form>
-        </x-slot>
-    </x-card>
+    <x-slot name="body">
+        <form id="sendMessage" action="{{ route('send.email') }}" method="post">
+            @csrf
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea name="message" rows="6" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" name="submit">Send to Emails</button>
+        </form>
+    </x-slot>
+</x-card>
 
     <x-card>
         <x-slot name="title">

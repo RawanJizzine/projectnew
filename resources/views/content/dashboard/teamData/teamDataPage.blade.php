@@ -37,8 +37,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" name="submit" id="submitFormBtn">submit</button>
-
+                    <button style="margin-top:3%;"      type="button" class="btn btn-primary" name="submit" id="submitFormBtn">submit</button>
+                    
                 </div>
             </form>
         </x-slot>
@@ -48,9 +48,9 @@
 
     <div class="d-flex justify-content-between">
         <h3>Ads Teams Data</h3>
-        <button type="button" class="btn btn-primary" style="width: 170px; height: 40px;" data-target="#add_team_modal"
+        <button type="button" class="btn btn-primary" style="width: 150px; height: 40px;" data-target="#add_team_modal"
             data-toggle="modal">
-            Create New Team
+            create
         </button>
     </div>
     <div class="modal fade" id="add_team_modal" tabindex="-1" role="dialog" aria-labelledby="addTeamModalLabel"
@@ -110,40 +110,27 @@
 
     <x-card>
         <x-slot name="body">
-            <div>
+            <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
-                           
-                            <th>photo</th>
+                            <th>Photo</th>
                             <th>Name</th>
                             <th>Position</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach ($teams_data ?? [] as $index => $data)
-                            <tr>
-                               
-                                <td><img src="{{ explode('/', $data['image'])[0] === 'uploads' ? asset('storage/' . $data['image'])??'' : asset( $data['image']) ??''}}"  alt="Image"></td>
-                                <td> <input type="text" readonly value="{{ $data['name'] }}" name="name"
-                                        class="form-control">
-                                </td>
-                                <td> <input type="text" readonly value="{{ $data['position'] }}" name="position"
-                                        class="form-control">
-                                </td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-primary edit-btn" data-toggle="modal"
-                                        data-target="#editTeam" data-id="{{ $data['id'] }}"
-                                        data-image="{{ $data['image'] }}" data-name="{{ $data['name'] }}"
-                                        data-position="{{ $data['position'] }}"
-                                        data-label-color="{{ $data['label_color'] }}"
-                                        data-border-color="{{ $data['border_color'] }}">Edit</a>
-                                    <a href="#" data-id="{{ $data['id'] }}" data-target="#deleteTeamModal"
-                                        class="btn btn-sm btn-warning delete-btn  ">Delete</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td><img src="{{ explode('/', $data['image'])[0] === 'uploads' ? asset('storage/' . $data['image']) : asset($data['image']) }}" alt="Image" class="img-fluid"></td>
+                            <td><input type="text" readonly value="{{ $data['name'] }}" name="name" class="form-control"></td>
+                            <td><input type="text" readonly value="{{ $data['position'] }}" name="position" class="form-control"></td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target="#editTeam" data-id="{{ $data['id'] }}" data-image="{{ $data['image'] }}" data-name="{{ $data['name'] }}" data-position="{{ $data['position'] }}" data-label-color="{{ $data['label_color'] }}" data-border-color="{{ $data['border_color'] }}">Edit</a>
+                                <a href="#" data-id="{{ $data['id'] }}" data-target="#deleteTeamModal" class="btn btn-sm btn-warning delete-btn">Delete</a>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

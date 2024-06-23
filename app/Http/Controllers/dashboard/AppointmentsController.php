@@ -66,6 +66,7 @@ class AppointmentsController extends Controller
             'phone' => $request->input('client_phone'),
             'session_name' => $request->input('name_session'),
             'user_id' => '1',
+            'status'=>'pending',
         ]);
         AppointmentTime::where('date', $request->input('selectedDate'))
         ->whereIn('time', (array) $request->input('time'))
@@ -247,6 +248,64 @@ public function showAppointmentsCalanderPage($id)
         }
     
         return response()->json(['success' => true, 'message' => 'Patient information saved successfully!']);
+    }
+
+    public function indexAppointmentsAvailability()
+    {
+        $userId = Auth::id();
+        $appointment = AppointmentTime::where('user_id', $userId)->get();
+        $data['appointment']=$appointment;
+        
+        return view('content.dashboard.appointments.appointmentavailability',$data);
+    }
+    public function saveAppointmentsAvailability(Request $request)
+    {
+        $request->validate([
+            'place' => 'required|string|max:255',
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+        ]);
+        $userId = Auth::id();
+        // Create a new appointment
+        $appointment = AppointmentTime::create([
+            'place' => $request->input('place'),
+            'date' => $request->input('date'),
+            'time' => $request->input('time'),
+            'user_id'=>$userId,
+        ]);
+
+        
+        return response()->json(['app' => $appointment], 201);
+        
+    }
+    public function updateAppointmentsAvailability(Request $request, $id )
+    {
+        $request->validate([
+            'place_edit' => 'required|string|max:255',
+            'date_edit' => 'required|date',
+            'time_edit' => 'required|date_format:H:i',
+        ]);
+
+        // Find the appointment by ID and update it
+        $appointment = AppointmentTime::findOrFail($id);
+        $appointment->update([
+            'place' => $request->input('place_edit'),
+            'date' => $request->input('date_edit'),
+            'time' => $request->input('time_edit'),
+        ]);
+
+        // Return a JSON response
+        return response()->json(['app' => $appointment], 200);
+        
+    }
+    public function destroyAppointmentsAvailability($id)
+    {
+        $appointment = AppointmentTime::findOrFail($id);
+        $appointment->delete();
+
+        // Return a JSON response
+        return response()->json(['message' => 'Appointment deleted successfully.'], 200);
+        
     }
     
 

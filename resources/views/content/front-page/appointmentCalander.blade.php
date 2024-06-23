@@ -165,7 +165,7 @@
         </div>
         <div class="form-group">
             <label for="name_session">Name Of Session</label>
-            <input type="name_session" name="name_session" id="name_session" value="{{$appointments->title  }}"  class="form-control" >
+            <input type="name_session" name="name_session" id="name_session" value="{{$appointments->title  }}"  class="form-control" readonly >
         </div>
 
         <button type="submit" style="margin-left: 38%; margin-top:5%;" class="btn btn-primary">Book Appointment</button>

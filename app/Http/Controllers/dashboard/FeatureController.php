@@ -88,6 +88,7 @@ class FeatureController extends Controller
             'location'=>$data['location'],
             'price'=>$data['price'],
             'sub_description'=>$data['subdescription'] ,
+            'user_id'=>$user_id,
 
         ]);
 

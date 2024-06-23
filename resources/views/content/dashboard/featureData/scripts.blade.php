@@ -55,8 +55,7 @@
                         '<td> <input type="text" value="' + feature.price +
                         '" name="title" class="form-control" readonly > </td>'
                         
-                        '<td><textarea name="sub_description" class="form-control" rows="6" readonly  >' +
-                        feature.sub_description + '</textarea></td>' +
+                         +
                         '<td>' +
                         '<a href="" class="btn btn-sm btn-primary">Edit</a>' +
                         ' ' +
@@ -162,6 +161,8 @@
             var description = $(this).data('description');
             var subdescription = $(this).data('subdescription');
             var price = $(this).data('price');
+            
+            
             $('#editFeatureForm').attr('action', '/updatefeature/' + id);
             $('#previewImageEdit').attr('src', '{{ asset('storage/') }}/' + image);
             $('#title_edit').val(title);

@@ -3,21 +3,26 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
 @section('content')
     <x-card>
         <x-slot name="title">
-          
+            <!-- Add any title content here -->
         </x-slot>
 
         <x-slot name="body">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 ml-md-3">
                 <h3>Appointment of Client</h3>
-                <button id="createNewAppointmentBtn" type="button" class="btn btn-primary" style="width: 170px; height: 40px;">
-                    Create New Appointment
-                </button>
+                <div class="mt-2 mt-md-0 d-flex justify-content-end justify-content-md-end w-100 w-md-auto">
+                    <button id="createNewAppointmentBtn" type="button" class="btn btn-primary mr-md-2 mb-2 mb-md-0" style="width: 170px; height: 40px;">
+                        Create New Appointment
+                    </button>
+                  
+                    <a href="{{ route('appointment-availability') }}" class="btn btn-primary" style="width: 170px; height: 40px; margin-left: 1rem;">
+                        Appointment Availability
+                    </a>
+                </div>
             </div>
-            <div>
+            <div class="table-responsive ml-md-3">
                 <table class="table">
                     <thead>
                         <tr>
@@ -26,8 +31,7 @@
                             <th>Name of Session</th>
                             <th>Date</th>
                             <th>Time</th>
-                            <th>action</th>
-
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,20 +49,12 @@
                         </tr>
                         @endforeach
                     </tbody>
-
-
-                    
                 </table>
-
-
             </div>
         </x-slot>
     </x-card>
-
-   
-
-
 @endsection
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -76,7 +72,6 @@
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                  
                     location.reload();
                 },
                 error: function(error) {
@@ -84,12 +79,9 @@
                 }
             });
         });
-    });
-    $(document).ready(function() {
+
         $('#createNewAppointmentBtn').click(function() {
             window.location.href = "{{ route('appointment.calander.dashboard') }}";
         });
     });
 </script>
-
-
