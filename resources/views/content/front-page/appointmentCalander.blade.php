@@ -133,7 +133,12 @@
     }
     
   }
+  .calanderstyle {
 
+
+width: 350px;
+height: 380px;
+}
     </style>
 </head>
 
@@ -146,15 +151,24 @@
         @csrf
         <div class="form-group">
             <label for="inst_date">Select Date</label>
-            <div id="calendar" style="height: 400px; width: 420px;"></div>
+            <div id="calendar" class="calanderstyle"></div>
             <input type="hidden" id="selectedDate" name="selectedDate">
         </div>
         <div class="form-group">
-            <label for="time">Time</label>
-            <select name="time" id="time" class="form-control" required>
-                <option value="">Select Time</option>
-            </select>
-        </div>
+          <label for="location">Location</label>
+          <select name="location" id="location" class="form-control" required>
+              <option value="">Select Location</option>
+              @foreach ($appointmentsplace as $place)
+                  <option value="{{ $place->place }}">{{ $place->place }}</option>
+              @endforeach
+          </select>
+      </div>
+      <div style="margin-top: 1%;" class="form-group">
+          <label for="time">Time</label>
+          <select name="time" id="time" class="form-control" required>
+              <option value="">Select Time</option>
+          </select>
+      </div>
         <div class="form-group">
             <label for="client_name">Client Name</label>
             <input type="text" name="client_name" id="client_name" class="form-control" required>
@@ -187,41 +201,39 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
 
 <script>
-  $(document).ready(function($) {
-    var officialHolidays = {!! json_encode($officialHolidays)!!};
+    $(document).ready(function($) {
+    var officialHolidays = {!! json_encode($officialHolidays) !!};
+    var today = moment().format('YYYY-MM-DD');
 
-    var fullCalendar = $('#calendar').fullCalendar({
+$('#selectedDate').val(today);
+    $('#calendar').fullCalendar({
         initialView: 'dayGridMonth',
         selectable: true,
-        select: (info) => {
-            const selectedDate = info._d;
-            const selectedDateStr = selectedDate.toISOString().slice(0, 10);
+        select: function(start, end, jsEvent, view) {
+            const selectedDateStr = start.format('YYYY-MM-DD');
             $('#selectedDate').val(selectedDateStr);
-
+            
             $.ajax({
-                url: '/get-available-times',
+                url: '/get-available-location',
                 method: 'POST',
                 data: {
                     date: selectedDateStr,
                     _token: '{{ csrf_token() }}'
                 },
-                success: (response) => {
-                    const times = response.times;
-                    const select = $('#time');
+                success: function(response) {
+                    const locations = response.locations;
+                    const select = $('#location');
                     select.empty();
-                    select.append('<option value="">Select Time</option>');
-                    times.forEach((time) => {
-                        select.append(`<option value="${time}">${time}</option>`);
+                    select.append('<option value="">Select Location</option>');
+                    locations.forEach(function(location) {
+                        const place = location.place;
+                        select.append(`<option value="${place}">${place}</option>`);
                     });
                 },
-                error: (xhr, status, error) => {
+                error: function(xhr, status, error) {
                     console.error('AJAX Error:', error);
                 }
             });
-        },
-
-        events: function(info, successCallback, failureCallback) {
-
         },
         dayRender: function(date, cell) {
             const isoDate = date.format('YYYY-MM-DD');
@@ -236,8 +248,35 @@
         }
     });
 
-    $('#calendarDate').change(function() {
-        fullCalendar.fullCalendar('gotoDate', $(this).val());
+    $('#location').change(function() {
+        const selectedDate = $('#selectedDate').val();
+        
+        const selectedLocation = $(this).val();
+
+        if (selectedDate && selectedLocation) {
+            $.ajax({
+                url: '{{ route('get-times') }}',
+                method: 'POST',
+                data: {
+                    date: selectedDate,
+                    location: selectedLocation,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    const times = response.times;
+                    const select = $('#time');
+                    select.empty();
+                    select.append('<option value="">Select Time</option>');
+                    times.forEach(function(time) {
+                      console.log(time.time)
+                        select.append(`<option value="${time.time}">${time.time}</option>`);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                }
+            });
+        }
     });
 });
     

@@ -190,12 +190,29 @@ class FrontController extends Controller
         return view('content.dashboard.message.message',compact('officialHolidays'));
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function getAvailableTimes(Request $request)
+    public function getAvailableLocation(Request $request)
     {
-       
+        $userId = Auth::id();
         $date = $request->input('date');
-        $availableTimes = AppointmentTime::where('date', $date)->pluck('time');
-        return response()->json(['times' => $availableTimes]);
+        $appointmentsplace = AppointmentTime::where('user_id', $userId)
+        ->whereDate('date', $date)
+        
+        ->distinct('place')
+        ->get(['place']);
+     
+        return response()->json(['locations' => $appointmentsplace]);
+    } 
+     
+    public function getTimes(Request $request)
+    {
+        
+        $location = $request->input('location');
+        $selectedDate = $request->input('date');
+       
+        $times = AppointmentTime::where('place', $location)
+                               ->whereDate('date', $selectedDate)->get();
+                             
+        return response()->json(['times' => $times]);
     }
     
 

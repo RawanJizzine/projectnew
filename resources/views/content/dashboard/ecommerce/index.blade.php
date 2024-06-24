@@ -82,6 +82,7 @@
                                 <i class="ti ti-users ti-sm"></i>
                             </div>
                             <div class="card-info">
+                               
                                 <h5 class="mb-0" id="customer">{{ $customer }}</h5>
                                 <small>New Customers</small>
                             </div>
@@ -194,6 +195,72 @@
         </div>
 
     </div>
+    <div class="col-xl-12 mb-4 col-lg-7 col-12">
+        <div class="card ">
+            <div class="card-header">
+                <div class="d-flex  mb-3">
+                    <h5 style="margin-top: 0.4%;" class="card-title mb-0">Order Information</h5>
+                    <small style="margin-left: 1.5%;" class="text-muted">
+                        <input  type="date" id="dateorder" name="dateorder" class="form-control">
+
+
+
+                    </small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div  class="row gy-5">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name Of Customer</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                    <th>Price</th>
+                                    <th>Customer Type</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody"    >
+                                @foreach ($orderstable ?? [] as $index => $data)
+                                    <tr>
+
+                                        <td>
+                                            <input type="text" value="{{ $data->customfullName }}" name="title"
+                                                class="form-control" readonly>
+                                        </td>
+                                        <td>
+                                            <input type="text" value="{{ $data->customphoneNumber }}" name="title"
+                                                class="form-control" readonly>
+                                        </td>
+                                        <td>
+                                            <textarea id="orderDetails" class="form-control" value="{{$data->customaddress   }}"  rows="4" readonly></textarea>
+                                        </td>
+                                        <td>
+                                            <input type="text" value="{{ $data->total_price }}" name="date"
+                                                class="form-control" readonly>
+                                        </td>
+                                        <td>
+                                            <input type="text" value="{{ $data->customer_type}}" name="time"
+                                                class="form-control" readonly>
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -210,14 +277,14 @@
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    $('#totalOrders').text(response.total_amount);
-                    $('#earningsorder').text(response.earnings);
-                    $('#ordercompleted').text(response.completed_order);
-                    $('#pageview').text(response.pageview);
-                    $('#customer').text(response.customer);
-                    $('#productnumber').text(response.productnumber);
-                    $('#totalappointment').text(response.totalappointment);
-                    $('#amountapp').text(response.amountappointment);
+                    $('#totalOrders').text(response.total_amount || 0);
+                $('#earningsorder').text(response.earnings || 0);
+                $('#ordercompleted').text(response.completed_order || 0);
+                $('#pageview').text(response.pageview || 0);
+                $('#customer').text(response.customer || 0);
+                $('#productnumber').text(response.productnumber || 0);
+                $('#totalappointment').text(response.totalappointment || 0);
+                $('#amountapp').text(response.amountappointment || 0);
                 },
                 error: function(error) {
                     alert('An error occurred');
@@ -240,6 +307,19 @@
         // Set the value of the date input to today's date
         const formattedDate = `${yyyy}-${mm}-${dd}`;
         document.getElementById('date').value = formattedDate;
+
+    })
+    $(document).ready(function() {
+        const today = new Date();
+
+        // Format the date as YYYY-MM-DD
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const dd = String(today.getDate()).padStart(2, '0');
+
+        // Set the value of the date input to today's date
+        const formattedDate = `${yyyy}-${mm}-${dd}`;
+        document.getElementById('dateorder').value = formattedDate;
 
     })
 
@@ -296,6 +376,61 @@
     function clearTable() {
         const tbody = document.getElementById('appointmentTableBody');
         tbody.innerHTML = '';
+    }
+});
+/////////////order
+  document.addEventListener('DOMContentLoaded', function() {
+    const dateInputorder = document.getElementById('dateorder');
+
+    dateInputorder.addEventListener('change', function() {
+        const dateorder = this.value;
+        fetchorder(dateorder);
+    });
+
+    function fetchorder(date) {
+        fetch(`/orderdate/${date}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No orders found');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    updateTableorder(data.orders);
+                } else {
+                    clearTableorder();
+                  
+                }
+            })
+            .catch(error => {
+                clearTableorder();
+               
+            });
+    }
+
+    function updateTableorder(appointments) {
+        const tbodyorder = document.getElementById('orderTableBody');
+        tbodyorder.innerHTML = '';
+
+        appointments.forEach(appointment => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td><input type="text" value="${appointment.customfullName}" class="form-control" readonly></td>
+                <td><input type="text" value="${appointment.customphoneNumber}" class="form-control" readonly></td>
+                <td><textarea class="form-control" rows="4" readonly>${appointment.customaddress}</textarea></td>
+                <td><input type="text" value="${appointment.total_price}" class="form-control" readonly></td>
+                <td><input type="text" value="${appointment.customer_type}" class="form-control" readonly></td>
+            `;
+
+            tbodyorder.appendChild(row);
+        });
+    }
+
+    function clearTableorder() {
+        const tbodyorder = document.getElementById('orderTableBody');
+        tbodyorder.innerHTML = '';
     }
 });
 </script>

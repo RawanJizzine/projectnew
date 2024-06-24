@@ -45,7 +45,16 @@ Route::post('/send-email', [FrontController::class, 'sendEmail'])->name('send.em
 Route::post('/send-email-letter', [FrontController::class, 'saveEmailLetter'])->name('save.email');
 Route::post('/send-message-disscusion', [FrontController::class, 'sendMessageContact'])->name('send.message.contact');
 Route::get('/newsletter', [FrontController::class, 'messages'])->name('new-letter');
-Route::post('/get-available-times', [FrontController::class, 'getAvailableTimes'])->name('get-available-times');
+
+
+
+
+Route::post('/get-available-location', [FrontController::class, 'getAvailableLocation'])->name('get-available-location');
+Route::post('/get-times', [FrontController::class, 'getTimes'])->name('get-times');
+
+
+
+
 Route::middleware(['auth'])->group(function () {
 Route::get('/login-front-page', [FrontController::class, 'showFrontPage'])->name('login-to-front');
 Route::get('/payment-page', [FrontController::class, 'showPaymentPage'])->name('payment-page');
@@ -169,3 +178,4 @@ Route::post('/save-patient-info', [AppointmentsController::class, 'storePatientD
 Route::get('/dashboard/ecommerce', [EcommerceController::class, 'index'])->name('ecommerce-page');
 Route::post('/get-statics-info', [EcommerceController::class, 'getOrders'])->name('get-statics-info');
 Route::get('/appointmentsdate/{date}', [EcommerceController::class, 'getAppointmentsByDate']);
+Route::get('/orderdate/{date}', [EcommerceController::class, 'getOrdersByDate']);

@@ -10,6 +10,7 @@ use App\Models\Feature;
 use App\Models\FilePatient;
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentsController extends Controller
@@ -55,17 +56,19 @@ class AppointmentsController extends Controller
             'selectedDate' => 'required|date',
             'time' => 'required',
             'client_name' => 'required|string',
+            'location' => 'required|string',
             'client_phone' => 'required|string',
             'name_session' => 'required|string',
         ]);
-
+        $userId = Auth::id();
         Appointment::create([
             'date' => $request->input('selectedDate'),
             'time' => $request->input('time'),
             'name' => $request->input('client_name'),
             'phone' => $request->input('client_phone'),
             'session_name' => $request->input('name_session'),
-            'user_id' => '1',
+            'location'=>$request->input('location'),
+            'user_id' => $userId,
             'status'=>'pending',
         ]);
         AppointmentTime::where('date', $request->input('selectedDate'))
@@ -98,9 +101,17 @@ class AppointmentsController extends Controller
 }
 public function showAppointmentsCalanderPage($id)
     {
+        $userId = Auth::id();
         $appointments=FeaturesData::where('id',$id)->first();
         $data['appointments'] = $appointments;
-      
+        $today = Carbon::today();
+        $appointmentsplace = AppointmentTime::where('user_id', $userId)
+        ->whereDate('date', $today)
+        
+        ->distinct('place')
+        ->get(['place']);
+       
+        $data['appointmentsplace']=$appointmentsplace;
         $data['officialHolidays'] = [
             '2024-01-01' => "New Year's Day",
             '2024-01-06' => "Armenian Christmas",
@@ -121,7 +132,15 @@ public function showAppointmentsCalanderPage($id)
        $features=Feature::where('user_id',$userId)->first();
        $feature_data=FeaturesData::where('features_id',$features->id )->get();
        $data['appointment']=$feature_data;
-    
+       $today = Carbon::today();
+       $appointmentsplace = AppointmentTime::where('user_id', $userId)
+       ->whereDate('date', $today)
+       
+       ->distinct('place')
+       ->get(['place']);
+      
+       $data['appointmentsplace']=$appointmentsplace;
+       /////////get time in the  date 
         $data['officialHolidays'] = [
             '2024-01-01' => "New Year's Day",
             '2024-01-06' => "Armenian Christmas",
