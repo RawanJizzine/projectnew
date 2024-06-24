@@ -342,6 +342,20 @@
             padding: .5rem 3rem;
             clip-path: polygon(100% 0, 93% 50%, 100% 99%, 0% 100%, 7% 50%, 0% 0%);
         }
+
+        .search-input-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .search-input {
+            width: 50%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 
 </head>
@@ -359,12 +373,16 @@
                 </div>
             @endforeach
         </div>
-
     </div>
+
+   
+
     <h1 class="heading-here-title">Our <span class="heading-span"> Products </span></h1>
-    <div class="gallery">
-
+    <div class="search-input-container">
+        <input id="searchInput" type="text" class="search-input" placeholder="Search products...">
     </div>
+    <div class="gallery"></div>
+
     <div class="landing-hero-blank"></div>
 </section>
 
@@ -372,83 +390,83 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         const categories = document.querySelectorAll('.category');
 
-        // Function to highlight the selected catfegory
+        // Function to highlight the selected category
         function highlightSelectedCategory(selectedCategory) {
-            // Remove the border and shadow from all categories
             categories.forEach((cat) => {
                 cat.classList.remove('border', 'border-primary', 'shadow-lg');
             });
-
-            // Add border and shadow to the selected category
             selectedCategory.classList.add('border', 'border-primary', 'shadow-lg');
         }
 
         // Function to fetch data based on category ID
         function fetchData(categoryId) {
-            // Make an AJAX request to the controller
             fetch(`/categories/${categoryId}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    // Display the data in the .gallery container
                     const galleryContainer = document.querySelector('.gallery');
                     galleryContainer.innerHTML = '';
                     data.forEach((product) => {
                         const productHTML = `
-                        
-                    <div class="content-product" >
-                        <a href="/productDetailsPage?id=${product.id}">   
-                        <img class="imgClass" src="/images/${product.image}" alt="${product.title}">
-                        <h3 class="hthree">${product.title}</h3>
-                        <p class="pClass">${product.description}</p>
-                        <h6 class="hClass">$${product.price}.00</h6>
-                        <ul class="ulClass">
-                            <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
-                            <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
-                            <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
-                            <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
-                            <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
-                        </ul>  
-                    </a>
-                        <button class="buttonClass buy-1" data-product-id="${product.id}"     >ADD TO CART</button>
-                    </div>
-               
-              
-                    `;
-
+                            <div class="content-product">
+                                <a href="/productDetailsPage?id=${product.id}">
+                                    <img class="imgClass" src="/images/${product.image}" alt="${product.title}">
+                                    <h3 class="hthree">${product.title}</h3>
+                                    <p class="pClass">${product.description}</p>
+                                    <h6 class="hClass">$${product.price}.00</h6>
+                                    <ul class="ulClass">
+                                        <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
+                                        <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
+                                        <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
+                                        <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
+                                        <li class="liClass"><i class="ti ti-star-filled checked ti-sm"></i></li>
+                                    </ul>
+                                </a>
+                                <button class="buttonClass buy-1" data-product-id="${product.id}">ADD TO CART</button>
+                            </div>
+                        `;
                         galleryContainer.innerHTML += productHTML;
                     });
 
                     document.querySelectorAll('.buy-1').forEach(button => {
-                        button.addEventListener('click', function(event) {
+                        button.addEventListener('click', function (event) {
                             event.preventDefault();
                             const productId = this.getAttribute('data-product-id');
-                            console.log("hi")
                             addToCart(productId);
                         });
                     });
 
+                    // Filter products based on search input
+                    const searchInput = document.getElementById('searchInput');
+                    searchInput.addEventListener('keyup', function () {
+                        const filter = searchInput.value.toLowerCase();
+                        const products = galleryContainer.querySelectorAll('.content-product');
+                        products.forEach((product) => {
+                            const title = product.querySelector('.hthree').textContent.toLowerCase();
+                            const description = product.querySelector('.pClass').textContent.toLowerCase();
+                            const price = product.querySelector('.hClass').textContent.toLowerCase();
+                            if (title.includes(filter) || description.includes(filter) || price.includes(filter)) {
+                                product.style.display = '';
+                            } else {
+                                product.style.display = 'none';
+                            }
+                        });
+                    });
                 })
-
-
-
                 .catch((error) => console.error(error));
         }
 
         function addToCart(productId) {
             fetch(`/add-to-cart/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    },
-                    body: JSON.stringify({
-                        productId: productId
-                    })
-                })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ productId: productId })
+            })
                 .then(response => {
                     if (response.ok) {
                         console.log("done");
@@ -459,23 +477,13 @@
                 .catch(error => console.error('Error:', error));
         }
 
-
         // Add event listener to each category element
         categories.forEach((category) => {
             category.addEventListener('click', (e) => {
-                // Remove the active class from all categories
                 categories.forEach((cat) => cat.classList.remove('active'));
-
-                // Add the active class to the clicked category
                 category.classList.add('active');
-
-                // Highlight the selected category
                 highlightSelectedCategory(category);
-
-                // Get the category ID from the element
                 const categoryId = category.dataset.categoryId;
-
-                // Fetch data based on category ID
                 fetchData(categoryId);
             });
         });

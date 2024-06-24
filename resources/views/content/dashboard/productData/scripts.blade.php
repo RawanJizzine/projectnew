@@ -144,15 +144,15 @@
             var price = $(this).data('price');
             var quantity = $(this).data('quantity');
             var sku = $(this).data('sku');
-           
+
             var barcode = $(this).data('barcode');
             var category = $(this).data('category');
             var categoryId = category.id;
 
-          $('#category_edit').val(categoryId);
+            $('#category_edit').val(categoryId);
 
 
-        $('#editProductForm').attr('action', '/updateproduct/' + id);
+            $('#editProductForm').attr('action', '/updateproduct/' + id);
             $('#previewImageEdit').attr('src', '{{ asset('images/') }}/' + image);
             $('#title_edit').val(title);
             $('#description_edit').val(description);
@@ -160,8 +160,8 @@
             $('#sku_edit').val(sku);
             $('#barcode_edit').val(barcode);
             $('#quantity_edit').val(quantity);
-          
-           
+
+
 
         });
 
@@ -248,6 +248,41 @@
                         console.error('Error:', error);
                     }
                 });
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toLowerCase();
+            var table = document.getElementById('productsTable');
+            var tr = table.getElementsByTagName('tr');
+
+            for (var i = 0; i < tr.length; i++) {
+                var tdProduct = tr[i].getElementsByTagName('td')[0];
+                var tdCategory = tr[i].getElementsByTagName('td')[1].getElementsByTagName('input')[0];
+                var tdName = tr[i].getElementsByTagName('td')[2].getElementsByTagName('input')[0];
+                var tdBarcode = tr[i].getElementsByTagName('td')[3].getElementsByTagName('input')[0];
+                var tdSky = tr[i].getElementsByTagName('td')[4].getElementsByTagName('input')[0];
+                var tdQty = tr[i].getElementsByTagName('td')[5].getElementsByTagName('input')[0];
+                var tdPrice = tr[i].getElementsByTagName('td')[6].getElementsByTagName('input')[0];
+
+                if (tdProduct || tdCategory || tdName || tdBarcode || tdSky || tdQty || tdPrice) {
+                    var textValue = (tdProduct.textContent || tdProduct.alt) + " " +
+                        (tdCategory.value || tdCategory.innerText) + " " +
+                        (tdName.value || tdName.innerText) + " " +
+                        (tdBarcode.value || tdBarcode.innerText) + " " +
+                        (tdSky.value || tdSky.innerText) + " " +
+                        (tdQty.value || tdQty.innerText) + " " +
+                        (tdPrice.value || tdPrice.innerText);
+
+                    if (textValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
             }
         });
     });

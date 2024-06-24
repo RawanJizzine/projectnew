@@ -119,66 +119,55 @@
     </div>
     <x-card>
         <x-slot name="body">
-            <div>
-
+            <div class="table-responsive ml-md-3">
+                <div class="mb-3">
+                    <input id="searchInput" type="text" class="form-control" placeholder="Search for products...">
+                </div>
                 <table class="table">
                     <thead>
                         <tr>
-
                             <th>PRODUCT</th>
                             <th>CATEGORY</th>
                             <th>NAME</th>
                             <th>BARCODE</th>
-
                             <th>SKY</th>
                             <th>QTY</th>
                             <th>PRICE</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-
+                    <tbody id="productsTable">
                         @foreach ($products_data ?? [] as $index => $data)
-                            <tr>
-                              
-
-                                <td>
-                                    <img src="{{ asset('images/' . $data->image) }}" class="image" alt="Image">
-                                </td>
-                                <td> <input type="text" value="{{ $data->category->name }}" name="category"
-                                        class="form-control" readonly></td>
-                                <td> <input type="text" value="{{ $data->title }}" name="title"
-                                        class="form-control" readonly></td>
-                                <td> <input type="number" value="{{ $data->barcode }}" name="barcode"
-                                        class="form-control" readonly></td>
-                                <td> <input type="number" value="{{ $data->sku }}" name="sky"
-                                        class="form-control" readonly></td>
-                                        <td>
-                                            <input type="text" value="{{ $data->quantity }}" name="quantity" class="form-control">
-                                        </td>
-                                <td> <input type="number" value="{{ $data->price }}" name="price"
-                                        class="form-control" readonly></td>
-
-
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-primary edit-btn" data-toggle="modal"
-                                        data-target="#editProduct" data-id="{{ $data->id }}"
-                                        data-image="{{ $data->image }}" data-title="{{ $data->title }}"
-                                        data-barcode="{{ $data->barcode }}" data-category="{{ $data->category }}"
-                                        data-sku="{{ $data->sku }}" data-quantity="{{ $data->quantity }}"
-                                        data-price="{{ $data->price }}"
-                                        data-description="{{ $data->description }}">Edit</a>
-                                    <a href="#" data-id="{{ $data->id }}" data-target="#deleteProductModal"
-                                        class="btn btn-sm btn-warning delete-btn  ">Delete</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                <img src="{{ asset('images/' . $data->image) }}" class="image" alt="Image">
+                            </td>
+                            <td>
+                                <input type="text" value="{{ $data->category->name }}" name="category" class="form-control" readonly>
+                            </td>
+                            <td>
+                                <input type="text" value="{{ $data->title }}" name="title" class="form-control" readonly>
+                            </td>
+                            <td>
+                                <input type="number" value="{{ $data->barcode }}" name="barcode" class="form-control" readonly>
+                            </td>
+                            <td>
+                                <input type="number" value="{{ $data->sku }}" name="sky" class="form-control" readonly>
+                            </td>
+                            <td>
+                                <input type="text" value="{{ $data->quantity }}" name="quantity" class="form-control">
+                            </td>
+                            <td>
+                                <input type="number" value="{{ $data->price }}" name="price" class="form-control" readonly>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-primary edit-btn" data-toggle="modal" data-target="#editProduct" data-id="{{ $data->id }}" data-image="{{ $data->image }}" data-title="{{ $data->title }}" data-barcode="{{ $data->barcode }}" data-category="{{ $data->category }}" data-sku="{{ $data->sku }}" data-quantity="{{ $data->quantity }}" data-price="{{ $data->price }}" data-description="{{ $data->description }}">Edit</a>
+                                <a href="#" data-id="{{ $data->id }}" data-target="#deleteProductModal" class="btn btn-sm btn-warning delete-btn">Delete</a>
+                            </td>
+                        </tr>
                         @endforeach
-
-
                     </tbody>
                 </table>
-
-
             </div>
 
             <div class="modal fade" id="editProduct" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel"

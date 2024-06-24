@@ -19,34 +19,37 @@
 </div>
 <x-card>
     <x-slot name="body">
-        <div class="table-wrapper">
+        <div class="table-responsive ml-md-3">
+            <div class="mb-3">
+                <input id="searchInput" type="text" class="form-control" placeholder="Search for orders...">
+            </div>
             <table class="table">
                 <thead>
                     <tr>
                         <th>Customer Name</th>
                         <th>Total Price</th>
-                        <th>Order Date </th>
+                        <th>Order Date</th>
                         <th>Country</th>
                         <th>Order Address</th>
                         <th>Status</th>
                         <th>Customer Type</th>
                         <th>Created By</th>
-                        <th>action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ordersTable">
                     @foreach($orders as $order)
                     <tr data-order-id="{{ $order->id }}">
                         <td>{{ $order->customfullName }}</td>
-                        <td>{{$order->total_price }}</td>
-                        <td>{{ $order->created_at  }}</td>
-                        <td>{{ $order->modalAddressCountry  }}</td>
+                        <td>{{ $order->total_price }}</td>
+                        <td>{{ $order->created_at }}</td>
+                        <td>{{ $order->modalAddressCountry }}</td>
                         <td>{{ $order->customaddress }}</td>
-                        <td id="status-{{$order->id}}">
+                        <td id="status-{{ $order->id }}">
                             <button type="button" class="btn btn-sm" style="width: 80px; height: 40px; background: {{ $order->status === 'pending' ? 'red' : 'green' }}; color: white;" onclick="markAsCompleted({{ $order->id }})">{{ $order->status }}</button>
                         </td>
-                        <td>{{ $order->customer_type  }}</td>
-                        <td>{{ $order->created_by  }}</td>
+                        <td>{{ $order->customer_type }}</td>
+                        <td>{{ $order->created_by }}</td>
                         <td>
                             <i class="fas fa-trash-alt" style="font-size: 24px;" data-id="{{ $order->id }}"></i>
                             <i class="fas fa-eye" style="font-size: 24px;" data-id="{{ $order->id }}"></i>
@@ -124,4 +127,44 @@ $(document).ready(function() {
             }
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toLowerCase();
+            var table = document.getElementById('ordersTable');
+            var tr = table.getElementsByTagName('tr');
+
+            for (var i = 0; i < tr.length; i++) {
+                var tdCustomerName = tr[i].getElementsByTagName('td')[0];
+                var tdTotalPrice = tr[i].getElementsByTagName('td')[1];
+                var tdOrderDate = tr[i].getElementsByTagName('td')[2];
+                var tdCountry = tr[i].getElementsByTagName('td')[3];
+                var tdOrderAddress = tr[i].getElementsByTagName('td')[4];
+                var tdStatus = tr[i].getElementsByTagName('td')[5];
+                var tdCustomerType = tr[i].getElementsByTagName('td')[6];
+                var tdCreatedBy = tr[i].getElementsByTagName('td')[7];
+
+                if (tdCustomerName || tdTotalPrice || tdOrderDate || tdCountry || tdOrderAddress || tdStatus || tdCustomerType || tdCreatedBy) {
+                    var textValue = (tdCustomerName.textContent || tdCustomerName.innerText) + " " +
+                        (tdTotalPrice.textContent || tdTotalPrice.innerText) + " " +
+                        (tdOrderDate.textContent || tdOrderDate.innerText) + " " +
+                        (tdCountry.textContent || tdCountry.innerText) + " " +
+                        (tdOrderAddress.textContent || tdOrderAddress.innerText) + " " +
+                        (tdStatus.textContent || tdStatus.innerText) + " " +
+                        (tdCustomerType.textContent || tdCustomerType.innerText) + " " +
+                        (tdCreatedBy.textContent || tdCreatedBy.innerText);
+
+                    if (textValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        });
+    });
+
+
+
 </script>
