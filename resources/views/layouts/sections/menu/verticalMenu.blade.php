@@ -149,7 +149,7 @@ $subscription = \App\Models\SubscriptionPlan::where('user_id', $userId )->first(
           </li>
 
           <li class="menu-item">
-            <a href="{{route('patient-data-page')}}" class="menu-link">
+            <a href="{{route('all-patient-data')}}" class="menu-link">
               <i class="menu-icon tf-icons ti ti-mail"></i>
               <div data-i18n=" products">Patient Data </div>
             </a>

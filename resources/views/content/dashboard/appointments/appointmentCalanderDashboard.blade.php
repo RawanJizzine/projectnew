@@ -189,7 +189,7 @@
 
                     <select id="name_session" name="name_session" class="form-control select2 ">
                         @foreach ($appointment as $feature)
-                            <option value="{{ $feature->id }}">{{ $feature->title }}</option>
+                            <option value="{{ $feature->title }}">{{ $feature->title }}</option>
                         @endforeach
                     </select>
                 </div>

@@ -85,12 +85,13 @@ class AppointmentsController extends Controller
     // Get the date and time of the appointment to be deleted
     $date = $appointment->date;
     $time = $appointment->time;
-
+    $place=$appointment->location;
     // Delete the appointment
     $appointment->delete();
 
     // Save the appointment time and date in the AppointmentTime table
     AppointmentTime::create([
+        'place'=>$place,
         'date' => $date,
         'time' => $time,
         'user_id' => auth()->id(), // Assuming you have authentication and a user ID
@@ -155,13 +156,29 @@ public function showAppointmentsCalanderPage($id)
 
         return view('content.dashboard.appointments.appointmentCalanderDashboard',$data);
     }
-
-    public function showpatientData()
+    public function showAllPatientData()
     {
         $userId = Auth::id();
-        $patients = Patient::with('filesPatientInfo')->where('user_id', $userId)->first();
+        $patients = Patient::with('filesPatientInfo')->where('user_id', $userId)->get();
+      $data['patients']=$patients;
+        return view('content.dashboard.patientData.allpatientData',$data);
+    }
+
+    public function showpatientData(Request $request)
+    {
+        $userId = Auth::id();
+        $patientId =  $request->query('patientId');
+     
+        $patients = Patient::with('filesPatientInfo')->where('id', $patientId)->where('user_id', $userId)->first();
       $data['patient']=$patients;
+     
         return view('content.dashboard.patientData.patientData',$data);
+    }
+    public function showcreatepatientData(Request $request)
+    {
+        
+     
+        return view('content.dashboard.patientData.createpatientData',);
     }
     public function storePatientData(Request $request)
     {
@@ -172,7 +189,7 @@ public function showAppointmentsCalanderPage($id)
             $request->validate([
                 'patientfullname' => 'required|string|max:255',
                 'phonenumber' => 'required|numeric',
-                'age' => 'required|numeric',
+                'sex' => 'required|string|max:255',
                 'dateofbirth' => 'required|date',
                 'width' => 'required|numeric',
                 'height' => 'required|numeric',
@@ -185,7 +202,7 @@ public function showAppointmentsCalanderPage($id)
                 $patient->update([
                     'fullname' => $request->patientfullname,
                     'phonenumber' => $request->phonenumber,
-                    'age' => $request->age,
+                    'sex' => $request->sex,
                     'dateofbirth' => $request->dateofbirth,
                     'width' => $request->width,
                     'height' => $request->height,
@@ -236,7 +253,7 @@ public function showAppointmentsCalanderPage($id)
             $request->validate([
                 'patientfullname' => 'required|string|max:255',
                 'phonenumber' => 'required|numeric',
-                'age' => 'required|numeric',
+                'sex' => 'required|string|max:255',
                 'dateofbirth' => 'required|date',
                 'width' => 'required|numeric',
                 'height' => 'required|numeric',
@@ -247,7 +264,7 @@ public function showAppointmentsCalanderPage($id)
             $patient = Patient::create([
                 'fullname' => $request->patientfullname,
                 'phonenumber' => $request->phonenumber,
-                'age' => $request->age,
+                'sex' => $request->sex,
                 'dateofbirth' => $request->dateofbirth,
                 'width' => $request->width,
                 'height' => $request->height,
@@ -325,6 +342,13 @@ public function showAppointmentsCalanderPage($id)
         // Return a JSON response
         return response()->json(['message' => 'Appointment deleted successfully.'], 200);
         
+    }
+    public function changestatusapp($appId){
+        $app = Appointment::findOrFail($appId);
+        $app->status = $app->status == 'completed' ? 'pending' : 'completed';
+        $app->save();
+
+        return response()->json(['message' => 'Appointment status updated to completed']); 
     }
     
 

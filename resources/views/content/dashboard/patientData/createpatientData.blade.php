@@ -9,65 +9,37 @@
     </div>
     <form method="POST" id="addNewPatientInfo" class="row g-3" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="id" value="{{ $patient->id ?? '' }}">
+        
         <div class="col-12 col-md-3">
             <label class="form-label" for="patientfullname">Patient Full Name</label>
-            <input type="text" id="patientfullname" value="{{ $patient->fullname ?? '' }}"    name="patientfullname" class="form-control" placeholder="John"
+            <input type="text" id="patientfullname"   name="patientfullname" class="form-control" placeholder="John"
                 required />
         </div>
         <div class="col-12 col-md-3">
             <label class="form-label" for="phonenumber">Phone Number</label>
-            <input type="number" id="phonenumber" value="{{ $patient->phonenumber ?? '' }}"     name="phonenumber" class="form-control" placeholder="00000000"
+            <input type="number" id="phonenumber"      name="phonenumber" class="form-control" placeholder="00000000"
                 required />
         </div>
         <div class="col-12 col-md-3">
             <label class="form-label" for="sex">Sex</label>
-            <input type="text" id="sex" name="sex" value="{{ $patient->sex ?? '' }}"    class="form-control" required />
+            <input type="text" id="sex" name="sex"     class="form-control" required />
         </div>
         <div class="col-12 col-md-3">
             <label class="form-label" for="dateofbirth">Date Of Birth</label>
-            <input type="date" id="dateofbirth" value="{{ $patient->dateofbirth ?? '' }}"      name="dateofbirth" class="form-control" required />
+            <input type="date" id="dateofbirth"       name="dateofbirth" class="form-control" required />
         </div>
         <div class="col-12 col-md-3">
             <label class="form-label" for="width">Width</label>
-            <input type="number" id="width"   value="{{ $patient->width ?? '' }}"        name="width" class="form-control" required />
+            <input type="number" id="width"    name="width" class="form-control" required />
         </div>
         <div class="col-12 col-md-3">
             <label class="form-label" for="height">Height</label>
-            <input type="number" id="height" name="height"  value="{{ $patient->height ?? '' }}"       class="form-control" required />
+            <input type="number" id="height" name="height"      class="form-control" required />
         </div>
 
         <div id="files-container" class="product-group-container">
 
-            @if ($patient->filesPatientInfo->isNotEmpty())
-                @foreach ($patient->filesPatientInfo as $index => $file)
-                    <x-card>
-                        <x-slot name="title"></x-slot>
-                        <x-slot name="body">
-                            <div class="row g-3">
-                                <input type="hidden" name="file[{{ $index }}][id]" value="{{ $file->id ?? '' }}">
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="title">Title of file</label>
-                                    <input type="text" id="titleoffile{{ $index }}"
-                                        name="file[{{ $index }}][title]" class="form-control"
-                                        value="{{ $file->title }}" required />
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <label for="file">File</label>
-                                    <div class="input-group">
-                                        <input type="file" id="file{{ $index }}"
-                                            name="file[{{ $index }}][file]" class="form-control file-input"
-                                            data-file-index="{{ $index }}">
-                                        <span style="font-size: 2em; padding-left: 20px;" id="file-icon{{ $index }}">
-                                            <i class="fas fa-file"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </x-slot>
-                    </x-card>
-                @endforeach
-            @else
+            
                 <x-card>
                     <x-slot name="title"></x-slot>
                     <x-slot name="body">
@@ -88,7 +60,7 @@
                         </div>
                     </x-slot>
                 </x-card>
-            @endif
+           
 
         </div>
 
@@ -109,7 +81,7 @@
 
 <script>
   $(document).ready(function() {
-    let fileIndex = {{ $patient->filesPatientInfo->count() }};
+    let fileIndex = 1;  // Initialize fileIndex
 
     function showFileIcon(input) {
         const file = input.files[0];
@@ -140,31 +112,6 @@
                 return '<i class="fas fa-file-excel"></i>';
             case 'application/vnd.ms-powerpoint':
             case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
-                return '<i class="fas fa-file-powerpoint"></i>';
-            default:
-                return '<i class="fas fa-file"></i>';
-        }
-    }
-
-    function getFileIconByExtension(extension) {
-        switch (extension) {
-            case 'jpeg':
-            case 'jpg':
-            case 'png':
-            case 'gif':
-                return '<i class="fas fa-file-image"></i>';
-            case 'pdf':
-                return '<i class="fas fa-file-pdf"></i>';
-            case 'txt':
-                return '<i class="fas fa-file-alt"></i>';
-            case 'doc':
-            case 'docx':
-                return '<i class="fas fa-file-word"></i>';
-            case 'xls':
-            case 'xlsx':
-                return '<i class="fas fa-file-excel"></i>';
-            case 'ppt':
-            case 'pptx':
                 return '<i class="fas fa-file-powerpoint"></i>';
             default:
                 return '<i class="fas fa-file"></i>';
@@ -224,6 +171,17 @@
             contentType: false,
             success: function(response) {
                 console.log('Success:', response);
+            
+                $('#addNewPatientInfo')[0].reset();
+
+                // Clear file icons
+                $('.file-input').each(function() {
+                    const fileIndex = $(this).data('file-index');
+                    $('#file-icon' + fileIndex).empty();
+                });
+
+                // Remove dynamically added file inputs (except the first one)
+                $('#files-container').empty();
             },
             error: function(error) {
                 console.error('Error:', error);
@@ -232,17 +190,6 @@
     });
 
     // Show icons for preloaded files
-    @if($patient->filesPatientInfo->isNotEmpty())
-    @foreach($patient->filesPatientInfo as $index => $file)
-        (function(fileIconId, filePath) {
-            const fileIcon = document.getElementById(fileIconId);
-            const fileExtension = filePath.split('.').pop();
-            fileIcon.innerHTML = getFileIconByExtension(fileExtension);
-            fileIcon.onclick = function () {
-                window.open('/files/' + filePath, '_blank');
-            };
-        })('file-icon{{ $index }}', '{{ $file->path }}');
-    @endforeach
-@endif
+
 });
 </script>

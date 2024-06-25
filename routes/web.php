@@ -140,7 +140,7 @@ Route::get('/appointment-availability', [AppointmentsController::class, 'indexAp
 Route::post('/save-appointment-availability', [AppointmentsController::class, 'saveAppointmentsAvailability'])->name('save-appointment-availability');
 Route::put('/updateappavailability/{id}', [AppointmentsController::class, 'updateAppointmentsAvailability'])->name('update-appointment-availability');
 Route::delete('/deleteappavailability/{id}', [AppointmentsController::class, 'destroyAppointmentsAvailability'])->name('appavailability.delete');
-
+Route::put('/appDashboard/{appId}', [AppointmentsController::class, 'changestatusapp']);
 //product 
 Route::get('/productPage', [ProductController::class, 'index'])->name('product-page');
 Route::get('/productDashboardPage', [ProductController::class, 'indexDashboard'])->name('product-page-dashboard');
@@ -171,9 +171,11 @@ Route::delete('/order-dashboard-delete/{id}', [ProductController::class, 'destro
 });
 
 //patientData
+Route::get('/allpatientData', [AppointmentsController::class, 'showAllPatientData'])->name('all-patient-data');
+
 Route::get('/patientData', [AppointmentsController::class, 'showpatientData'])->name('patient-data-page');
 Route::post('/save-patient-info', [AppointmentsController::class, 'storePatientData'])->name('files.store');
-
+Route::get('/createpatientData', [AppointmentsController::class, 'showcreatepatientData'])->name('create-patient-data');
 //ecommerce
 Route::get('/dashboard/ecommerce', [EcommerceController::class, 'index'])->name('ecommerce-page');
 Route::post('/get-statics-info', [EcommerceController::class, 'getOrders'])->name('get-statics-info');

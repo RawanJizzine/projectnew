@@ -302,7 +302,7 @@ public function markAsCompleted($orderId)
     {
         
         $order = Order::findOrFail($orderId);
-        $order->status = 'completed';
+        $order->status == 'completed'?'pending':'completed';
         $order->save();
 
         return response()->json(['message' => 'Order status updated to completed']);

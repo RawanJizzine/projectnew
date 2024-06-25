@@ -34,11 +34,11 @@
   .product-info {
     
     float: left;
-    height: 50rem; /* Fixed height */
+    height: 52rem; /* Fixed height */
     width: 90%; /* Adjusted width for responsiveness */
     background-color: #ffffff;
     border-radius: 0 7px 7px 0;
-    overflow-y: auto; /* Adds a scrollbar if content overflows */
+    overflow-y: hidden; /* Adds a scrollbar if content overflows */
     overflow-x: hidden; /* Prevents horizontal overflow */
   }
 
