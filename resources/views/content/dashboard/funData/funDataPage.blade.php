@@ -83,7 +83,7 @@
                         @foreach ($funs_data ?? [] as $index => $data)
                             <tr>
                                
-                                <td><img src="{{ explode('/', $data['image'])[0] === 'uploads' ? asset('storage/' . $data['image'])??'' : asset( $data['image']) ??''}}" alt="Image"></td>
+                                <td><img src="{{  asset('funFile/' . $data['image'])??'' }}" alt="Image"></td>
                                 <td> <input readonly type="text" value="{{ $data['event'] }}" name="event" class="form-control">
                                 </td>
                                 <td> <input readonly type="text" value="{{ $data['title'] }}" name="title" class="form-control">

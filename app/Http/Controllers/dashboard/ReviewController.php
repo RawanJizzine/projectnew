@@ -7,9 +7,10 @@ use App\Models\Review;
 use App\Models\ReviewsData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
-
+use Stringable;
 
 class ReviewController extends Controller
 {
@@ -61,9 +62,12 @@ class ReviewController extends Controller
         $review_data = Review::where('user_id', $user_id ?? '')
             ->first();
 
-        $pathimage = $data['image']->store('uploads/images/reviews', 'public');
-        $pathicon = $data['icon']->store('uploads/images/reviews', 'public');
-
+       
+        $pathimage = Str::random(10) . '.' . $data['image']->extension();
+        $data['image']->move(public_path('reviews'), $pathimage);
+        
+        $pathicon = Str::random(10) . '.' . $data['icon']->extension();
+        $data['icon']->move(public_path('reviews'), $pathicon);
         $review =  ReviewsData::create([
             'reviews_id' => $review_data->id,
             'name' => $data['name'],
@@ -93,14 +97,19 @@ class ReviewController extends Controller
         if (!$review) {
             return response()->json(['message' => 'this not found'], 404);
         }
-        if (isset($request->image_edit)) {
-            $pathimage = $request->image_edit->store('uploads/images/reviews', 'public');
+       
+        if (isset($request->edit_image)) {
+            $pathimage = Str::random(10) . '.' . $request->edit_image->extension();
+           
+            $request->edit_image->move(public_path('reviews'), $pathimage);
             $review->update([
                 'image' => $pathimage,
             ]);
         }
         if (isset($request->icon_edit)) {
-            $pathicon = $request->icon_edit->store('uploads/images/reviews', 'public');
+            $pathicon = Str::random(10) . '.' . $request->icon_edit->extension();
+           
+            $request->icon_edit->move(public_path('reviews'), $pathicon);
             $review->update([
                 'icon' => $pathicon,
             ]);

@@ -111,7 +111,8 @@ class FeatureController extends Controller
             return response()->json(['message' => 'this not found'], 404);
         }
         if (isset($request->image_edit)) {
-            $path = $request->image_edit->store('images', 'public');
+            $path = time() . '.' . $request->image_edit->extension();
+            $request->image_edit->move(public_path('features'), $path);
          
             $feature->update([
                 'title' => $validatedData['title_edit'],

@@ -143,7 +143,7 @@
                         @foreach ($features_data ?? [] as $index => $data)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('images/' . $data->image) }}" class="image" alt="Image">
+                                    <img src="{{ asset('features/' . $data->image) }}" class="image" alt="Image">
                                 </td>
                                 <td>
                                     <input type="text" value="{{ $data->title }}" name="title"

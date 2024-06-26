@@ -122,9 +122,9 @@
                     <tbody>
                         @foreach ($reviews_data ?? [] as $index => $data)
                         <tr>
-                            <td><img src="{{ explode('/', $data->image)[0] === 'uploads' ? asset('storage/' . $data->image) : asset($data->image) }}" alt="Image" class="img-fluid"></td>
+                            <td><img src="{{ asset('reviews/' . $data->image)  }}" alt="Image" class="img-fluid"></td>
                             <td><input readonly type="number" value="{{ $data->rating }}" min="0" max="5" name="rating" class="form-control"></td>
-                            <td><img src="{{ explode('/', $data->icon)[0] === 'uploads' ? asset('storage/' . $data->icon) : asset($data->icon) }}" alt="Icon" class="img-fluid"></td>
+                            <td><img src="{{  asset('reviews/' . $data->icon)  }}" alt="Icon" class="img-fluid"></td>
                             <td><input readonly type="text" value="{{ $data->name }}" name="name" class="form-control"></td>
                             <td><input readonly type="text" value="{{ $data->position }}" name="position" class="form-control"></td>
                             <td>

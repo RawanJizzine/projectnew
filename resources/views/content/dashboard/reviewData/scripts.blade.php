@@ -102,13 +102,13 @@
                     var review = data.review;
                     var newRow = '<tr>' +
 
-                        '<td><img src="{{ asset('storage/') }}/' + review.image +
+                        '<td><img src="{{ asset('reviews/') }}/' + review.image +
                         '" alt="Image" style="max-width: 100px; max-height: 100px;"></td>' +
                         '<td><textarea readonly name="description" class="form-control" rows="6">' +
                         review.description + '</textarea></td>' +
                         '<td> <input readonly  type="text" value="' + review.rating +
                         '" name="rating" class="form-control"> </td>' +
-                        '<td><img src="{{ asset('storage/') }}/' + review.icon +
+                        '<td><img src="{{ asset('reviews/') }}/' + review.icon +
                         '" alt="Icon" style="max-width: 100px; max-height: 100px;"></td>' +
 
 
@@ -178,8 +178,8 @@
             $('#editReviewForm').attr('action', '/updateReview/' + id);
 
 
-            $('#previewImageEdit').attr('src', '{{ asset('storage/') }}/' + image);
-            $('#previewIconEdit').attr('src', '{{ asset('storage/') }}/' + icon);
+            $('#previewImageEdit').attr('src', '{{ asset('reviews/') }}/' + image);
+            $('#previewIconEdit').attr('src', '{{ asset('reviews/') }}/' + icon);
             $('#name_edit').val(name);
             $('#rating_edit').val(rating);
             $('#position_edit').val(position);

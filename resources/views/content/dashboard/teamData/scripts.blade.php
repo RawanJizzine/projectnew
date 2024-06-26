@@ -90,7 +90,7 @@
                     var team = data.team;
                     var newRow = '<tr>' +
 
-                        '<td><img src="{{ asset('storage/') }}/' + team.image +
+                        '<td><img src="{{ asset('teamFile/') }}/' + team.image +
                         '" alt="Image" ></td>' +
                         '<td> <input readonly type="text" value="' + team.name +
                         '" name="name" class="form-control"> </td>' +
@@ -149,7 +149,7 @@
             var borderColor = $(this).data('border-color');
 
             $('#editTeamForm').attr('action', '/updateteam/' + id);
-            $('#previewImageEdit').attr('src', '{{ asset('storage/') }}/' + image);
+            $('#previewImageEdit').attr('src', '{{ asset('teamFile/') }}/' + image);
             $('#name_edit').val(name);
             $('#position_edit').val(position);
 

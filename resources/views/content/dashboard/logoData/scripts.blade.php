@@ -47,7 +47,7 @@
                     var logo = data.logo;
                     var newRow = '<tr>' +
 
-                        '<td><img src="{{ asset('storage/') }}/' + logo.image +
+                        '<td><img src="{{ asset('logo/') }}/' + logo.image +
                         '" alt="Image" style="max-width: 100px; max-height: 100px;"></td>' +
 
                         '<td>' +
@@ -102,8 +102,7 @@
             var id = $(this).data('id');
             var image = $(this).data('image');
             $('#editLogoForm').attr('action', '/updatelogo/' + id);
-            $('#previewImageEdit').attr('src', '{{ asset('storage/') }}/' + image);
-
+            $('#previewImageEdit').attr('src', '{{ asset('logo/') }}/' + image);
         });
 
         $('#updateLogoBtn').click(function() {
@@ -117,12 +116,12 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    alert('Data updated successfully')
+                    alert('Data updated successfully');
                     $('#editLogo').modal('hide');
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error Here!')
+                    alert('Error Here!');
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
@@ -131,15 +130,12 @@
             });
 
             function displayValidationErrors(errors) {
-
                 $('.validation-errors').remove();
                 $.each(errors, function(field, messages) {
                     var input = $('[name="' + field + '"]');
                     var container = input.closest('.form-group');
                     $.each(messages, function(index, message) {
-                        container.append('<p class="text-danger validation-errors">' +
-                            message +
-                            '</p>');
+                        container.append('<p class="text-danger validation-errors">' + message + '</p>');
                     });
                 });
             }
@@ -152,7 +148,6 @@
                 var reader = new FileReader();
 
                 reader.onload = function(e) {
-
                     document.getElementById('previewImageEdit').src = e.target.result;
                 };
 

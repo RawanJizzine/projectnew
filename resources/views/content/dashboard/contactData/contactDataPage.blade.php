@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group" >
                         @if ($contact->image_cta ?? '')
-                            <img class="uploaded-cta-image"   src="{{ explode('/', $contact->image_cta)[0] === 'uploads' ? asset('storage/' . $contact->image_cta)??'' : asset( $contact->image_cta) ??''}}"    
+                            <img class="uploaded-cta-image"   src="{{  asset('contactFile/' . $contact->image_cta)??'' }}"    
                                 style="max-width: 100px; max-height: 100px;" id="previewImagecta">
                         @else
                             <img class="uploaded-cta-image" style="max-width: 100px; max-height: 100px;" id="previewImagecta" >
@@ -71,7 +71,7 @@
                     </div>
                     <div class="form-group">
                         @if ($contact->image_contact ?? '')
-                            <img class="uploaded-contact-image" src="{{ explode('/', $contact->image_contact)[0] === 'uploads' ? asset('storage/' . $contact->image_contact)??'' : asset( $contact->image_contact) ??''}}"   
+                            <img class="uploaded-contact-image" src="{{ asset('contactFile/' . $contact->image_contact)??'' }}"   
                                 style="max-width: 100px; max-height: 100px;" id="previewImagecontact"  >
                         @else
                             <img class="uploaded-contact-image" style="max-width: 100px; max-height: 100px;" id="previewImagecontact"   >

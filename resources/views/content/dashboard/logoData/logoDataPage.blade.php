@@ -1,10 +1,7 @@
 @section('title', 'Dashboard')
 @extends('layouts.layoutMaster')
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<style>
 
-</style>
 
 @section('content')
     <div class="d-flex justify-content-between">
@@ -60,7 +57,7 @@
                         @foreach ($logos_data ?? [] as $index => $data)
                             <tr>
 
-                                <td><img  src="{{ explode('/', $data->image)[0] === 'uploads' ? asset('storage/' . $data->image)??'' : asset( $data->image) ??''}}" alt="Image"></td>
+                                <td><img  src="{{  asset('logo/' . $data->image)??'' }}" alt="Image"></td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-primary edit-btn" data-toggle="modal"
                                         data-target="#editLogo" data-id="{{ $data->id }}"
@@ -80,33 +77,29 @@
     </div>
 
 
-    <div class="modal fade" id="editLogo" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editLogo" tabindex="-1" role="dialog" aria-labelledby="editLogoLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editUserModalLabel">Edit Logo </h5>
+                    <h5 class="modal-title" id="editLogoLabel">Edit Logo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <form id="editLogoForm" action="" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-body">
+                <div class="modal-body">
+                    <form id="editLogoForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
                         <div class="form-group">
-                            <label for="image_edit" class="form-label">Image</label>
-                            <input type="file" name="image_edit" class="form-control" accept="image/png,image/jpeg"
-                                id="imageInputEdit" required>
+                            <label for="imageInputEdit">Logo Image</label>
+                            <input type="file" name="image_edit" id="imageInputEdit" class="form-control">
                         </div>
                         <div class="form-group">
-                            <img class="uploaded-image-edit" style="max-width: 100px; max-height: 100px;"
-                                id="previewImageEdit">
+                            <img id="previewImageEdit" src="#" alt="Logo Preview" style="max-width: 100%;">
                         </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="updateLogoBtn">Update</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
+                        <button type="button" id="updateLogoBtn" class="btn btn-primary">Update Logo</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

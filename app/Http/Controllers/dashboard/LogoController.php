@@ -24,7 +24,9 @@ class LogoController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $user_id = Auth::id();
-        $path = $data['image']->store('uploads/images/logo', 'public');
+        
+        $path = time() . '.' . $data['image']->extension();
+        $data['image']->move(public_path('logo'), $path);
         $logo =  LogoData::create([
             'user_id' => $user_id,
             'image' => $path,
@@ -35,17 +37,20 @@ class LogoController extends Controller
     public function update(Request $request, $id)
 
     {
-        $logo =  LogoData::find($id);
+        
+        $logo = LogoData::find($id);
         if (!$logo) {
-            return response()->json(['message' => 'this not found'], 404);
+            return response()->json(['message' => 'Logo not found'], 404);
         }
-        if (isset($request->image_edit)) {
-            $path = $request->image_edit->store('uploads/images/logo', 'public');
+        if ($request->hasFile('image_edit')) {
+            $path = time() . '.' . $request->image_edit->extension();
+            $request->image_edit->move(public_path('logo'), $path);
             $logo->update([
                 'image' => $path,
             ]);
         }
-        return response()->json(['message' => 'logo updated successfully', 'logo' => $logo]);
+        return response()->json(['message' => 'Logo updated successfully', 'logo' => $logo]);
+  
     }
 
     public function destroy($id)

@@ -46,7 +46,7 @@
                     itemCount++;
                     var newRow = '<tr>' +
 
-                        '<td><img src="{{ asset('storage/') }}/' + feature.image +
+                        '<td><img src="{{ asset('features/') }}/' + feature.image +
                         '" alt="Image" style="max-width: 100px; max-height: 100px;"></td>' +
                         '<td> <input type="text" value="' + feature.title +
                         '" name="title" class="form-control" readonly > </td>' +
@@ -164,7 +164,7 @@
             
             
             $('#editFeatureForm').attr('action', '/updatefeature/' + id);
-            $('#previewImageEdit').attr('src', '{{ asset('storage/') }}/' + image);
+            $('#previewImageEdit').attr('src', '{{ asset('features/') }}/' + image);
             $('#title_edit').val(title);
             $('#description_edit').val(description);
             $('#location_edit').val(location);

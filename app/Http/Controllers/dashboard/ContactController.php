@@ -7,7 +7,7 @@ use App\Models\ContactData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-
+use Illuminate\Support\Str;
 class ContactController extends Controller
 {
     
@@ -42,13 +42,17 @@ class ContactController extends Controller
             ]);
             $contact =  ContactData::find($request->id);
             if (isset($request->image_cta)) {
-                $pathimage = $request->image_cta->store('uploads/images/contact', 'public');
+                
+                $pathimage = Str::random(10) . '.' .  $request->image_cta->extension();
+                $request->image_cta->move(public_path('contactFile'), $pathimage);
                 $contact->update([
                     'image_cta' => $pathimage,
                 ]);
             }
             if (isset($request->image_contact)) {
-                $pathcontact = $request->image_contact->store('uploads/images/contact', 'public');
+              
+                $pathcontact = Str::random(10) . '.' .  $request->image_contact->extension();
+                $request->image_contact->move(public_path('contactFile'), $pathcontact);
                 $contact->update([
                     'image_contact' =>  $pathcontact,
                 ]);
@@ -88,8 +92,11 @@ class ContactController extends Controller
                 'image_cta' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'image_contact' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
-            $pathimage = $request->image_cta->store('uploads/images/contact', 'public');
-            $pathcontact = $request->image_contact->store('uploads/images/contact', 'public');
+           
+            $pathimage = Str::random(10) . '.' .  $request->image_cta->extension();
+            $request->image_cta->move(public_path('contactFile'), $pathimage);
+            $pathcontact = Str::random(10) . '.' .  $request->image_contact->extension();
+                $request->image_contact->move(public_path('contactFile'), $pathcontact);
             ContactData::create([
                 'user_id' => $user_id,
                 'title_cta' => $data['title_cta'],

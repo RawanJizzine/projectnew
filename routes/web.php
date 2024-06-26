@@ -103,7 +103,7 @@ Route::delete('/faq/{id}', [FaqController::class, 'destroy'])->name('faq.delete'
 
 //logo
 
-Route::get('/logo', [LogoController::class, 'index'])->name('dashboard-logo-page');
+Route::get('/logos', [LogoController::class, 'index'])->name('dashboard-logo-page');
 Route::post('/logo-data-save', [LogoController::class, 'createLogoData'])->name('create-logo-data');
 Route::put('/updatelogo/{id}', [LogoController::class, 'update'])->name('logo.update');
 Route::delete('/logo/{id}', [LogoController::class, 'destroy'])->name('logo.delete');

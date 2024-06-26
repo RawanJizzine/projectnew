@@ -35,7 +35,9 @@ class FunFactsController extends Controller
 
         $user_id = Auth::id();
 
-        $path = $data['image']->store('uploads/images/funs', 'public');
+       
+        $path = time() . '.' . $data['image']->extension();
+        $data['image']->move(public_path('funFile'), $path);
         $labelColor = '';
         switch ($request->label_color) {
             case 'red':
@@ -138,7 +140,8 @@ class FunFactsController extends Controller
 
 
         if (isset($request->image_edit)) {
-            $path = $request->image_edit->store('uploads/images/funs', 'public');
+            $path = time() . '.' . $request->image_edit->extension();
+            $request->image_edit->move(public_path('funFile'), $path);
             $fun->update([
                 'event' => $validatedData['event_edit'],
                 'title' => $validatedData['title_edit'],

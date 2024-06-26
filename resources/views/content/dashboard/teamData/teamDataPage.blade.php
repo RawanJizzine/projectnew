@@ -123,7 +123,7 @@
                     <tbody>
                         @foreach ($teams_data ?? [] as $index => $data)
                         <tr>
-                            <td><img src="{{ explode('/', $data['image'])[0] === 'uploads' ? asset('storage/' . $data['image']) : asset($data['image']) }}" alt="Image" class="img-fluid"></td>
+                            <td><img   src="{{ asset('teamFile/' . $data['image']) }}"     alt="Image" class="img-fluid"></td>
                             <td><input type="text" readonly value="{{ $data['name'] }}" name="name" class="form-control"></td>
                             <td><input type="text" readonly value="{{ $data['position'] }}" name="position" class="form-control"></td>
                             <td>

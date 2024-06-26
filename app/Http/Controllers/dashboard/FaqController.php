@@ -30,7 +30,9 @@ class FaqController extends Controller
         ]);
 
         $user_id = Auth::id();
-        $path = $data['image']->store('uploads/images/faqs', 'public');
+       
+        $path = time() . '.' . $data['image']->extension();
+        $data['image']->move(public_path('faqFile'), $path);
         $faqsdata = Faq::updateOrCreate([
             'user_id' => $user_id,
         ], [

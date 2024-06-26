@@ -60,7 +60,9 @@ class TeamController extends Controller
         $team_data = TeamModel::where('user_id', $user_id ?? '')
             ->first();
 
-        $path = $data['image']->store('uploads/images/teams', 'public');
+        
+        $path = time() . '.' . $data['image']->extension();
+        $data['image']->move(public_path('teamFile'), $path);
         $labelColor = '';
         switch ($request->label_color) {
             case 'red':
@@ -162,7 +164,8 @@ class TeamController extends Controller
 
 
         if (isset($request->image_edit)) {
-            $path = $request->image_edit->store('uploads/images/teams', 'public');
+            $path = time() . '.' . $request->image_edit->extension();
+            $request->image_edit->move(public_path('teamFile'), $path);
             $team->update([
                 'name' => $validatedData['name_edit'],
                 'position' => $validatedData['position_edit'],

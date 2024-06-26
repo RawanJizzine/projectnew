@@ -7,7 +7,7 @@ use App\Models\HomeData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-
+use Illuminate\Support\Str;
 class HomeController extends Controller
 {
     public function index()
@@ -32,14 +32,16 @@ class HomeController extends Controller
             $home =  HomeData::find($request->id);
             if (isset($request->image_link_dashboard)) {
                 $imageName = time() . '.' . $request->image_link_dashboard->extension();
-                $request->image_link_dashboard->move(public_path('images'), $imageName);
+                $request->image_link_dashboard->move(public_path('homeFile'), $imageName);
               
                 $home->update([
                     'image_link_dashboard' => $imageName,
                 ]);
             }
             if (isset($request->image_link_element)) {
-                $pathelement = $request->file('image_link_element')->store('uploads/images/home', 'public');
+                $pathelement = time() . '.' . $request->image_link_element->extension();
+                $request->image_link_element->move(public_path('homeFile'), $pathelement);
+               
                 $home->update([
                     'image_link_element' =>  $pathelement,
                 ]);
@@ -61,8 +63,12 @@ class HomeController extends Controller
                 'image_link_dashboard' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'image_link_element' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
-            $pathimage = $request->image_link_dashboard->store('uploads/images/home', 'public');
-            $pathelement = $request->image_link_element->store('uploads/images/home', 'public');
+           
+            $pathimage = Str::random(10) . '.' . $request->image_link_dashboard->extension();
+            $request->image_link_dashboard->move(public_path('homeFile'), $pathimage);
+           
+            $pathelement = Str::random(10) . '.' . $request->image_link_element->extension();
+            $request->image_link_element->move(public_path('homeFile'), $pathelement);
             HomeData::create([
                 'user_id' => $user_id,
                 'main_description' => $data['main_description'],

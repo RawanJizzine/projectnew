@@ -419,11 +419,11 @@
                                 <div id="heroAnimationImg" class="position-relative hero-dashboard-img">
 
                                     <div id="heroAnimationImg" class="position-relative hero-dashboard-img">
-                                        <img src="{{ explode('/', $home->image_link_dashboard)[0] === 'uploads' ? asset('storage/' . $home->image_link_dashboard) : asset($home->image_link_dashboard) }}"
+                                        <img  src="{{ asset('homeFile/' . $home->image_link_dashboard) }}"
                                             alt="hero dashboard" class="animation-img">
 
 
-                                        <img src="{{ explode('/', $home->image_link_element)[0] === 'uploads' ? asset('storage/' . $home->image_link_element) : asset($home->image_link_element) }}"alt="hero elements"
+                                        <img src="{{ asset('homeFile/' . $home->image_link_element) }}"alt="hero elements"
                                             alt="hero elements"
                                             class="position-absolute hero-elements-img animation-img top-0 start-0" />
                                     </div>
@@ -466,7 +466,7 @@
                                             <div class="text-center mb-3">
 
                                                 <img height="50" width="80"
-                                                    src="{{ explode('/', $item['image'])[0] === 'uploads' ? asset('storage/' . $item['image']) ?? '' : asset('images/' . $item['image']) ?? '' }}"
+                                                    src="{{  asset('features/' . $item['image']) ?? ''  }}"
                                                     alt="Icon" />
                                             </div>
                                             <h5 class="mb-3">{{ $item['title'] }}</h5>
@@ -503,7 +503,7 @@
                                     <div class="col-lg-4 col-sm-6 text-center features-icon-box card  shadow-lg  ">
                                         <div class="text-center mb-3">
 
-                                            <img src="{{ explode('/', $item['image'])[0] === 'uploads' ? asset('storage/' . $item['image']) ?? '' : asset('images/' . $item['image']) ?? '' }}"
+                                            <img src="{{  asset('features/' . $item['image']) ?? ''  }}"
                                                 alt="Icon" />
                                         </div>
                                         <h5 class="mb-3 title-text ">{{ $item['title'] }}</h5>
@@ -571,7 +571,7 @@
                                                                 <div
                                                                     class="card-body text-body d-flex flex-column justify-content-between h-100">
                                                                     <div class="mb-3">
-                                                                        <img src="{{ explode('/', $review['image'])[0] === 'uploads' ? asset('storage/' . $review['image']) ?? '' : asset($review['image']) ?? '' }}"
+                                                                        <img src="{{  asset('reviews/' . $review['icon']) ?? ''  }}"
                                                                             alt="client logo"
                                                                             class="client-logo img-fluid" />
                                                                     </div>
@@ -589,7 +589,7 @@
                                                                     </div>
                                                                     <div class="d-flex align-items-center">
                                                                         <div class="avatar me-2 avatar-sm">
-                                                                            <img src="{{ explode('/', $review['icon'])[0] === 'uploads' ? asset('storage/' . $review['icon']) ?? '' : asset($review['icon']) ?? '' }}"
+                                                                            <img src="{{  asset('reviews/' . $review['image']) ?? ''  }}"
                                                                                 alt="Avatar" class="rounded-circle" />
                                                                         </div>
                                                                         <div>
@@ -637,7 +637,7 @@
                                             @foreach ($logosdata ?? [] as $logo)
                                                 <div class="swiper-slide">
 
-                                                    <img src="{{ explode('/', $logo['image'])[0] === 'uploads' ? asset('storage/' . $logo['image']) ?? '' : asset($logo['image']) ?? '' }}"
+                                                    <img src="{{  asset('logo/' . $logo['image']) ?? '' }}"
                                                         alt="client logo" class="client-logo" />
                                                 </div>
                                             @endforeach
@@ -692,7 +692,7 @@
                                                             <div
                                                                 class="card-body text-body d-flex flex-column justify-content-between h-100">
                                                                 <div class="mb-3">
-                                                                    <img src="{{ explode('/', $review['image'])[0] === 'uploads' ? asset('storage/' . $review['image']) ?? '' : asset($review['image']) ?? '' }}"
+                                                                    <img src="{{  asset('reviews/' . $review['icon']) ?? ''  }}"
                                                                         alt="client logo" class="client-logo img-fluid" />
                                                                 </div>
                                                                 <p>
@@ -709,7 +709,7 @@
                                                                 </div>
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="avatar me-2 avatar-sm">
-                                                                        <img src="{{ explode('/', $review['icon'])[0] === 'uploads' ? asset('storage/' . $review['icon']) ?? '' : asset($review['icon']) ?? '' }}"
+                                                                        <img src="{{  asset('reviews/' . $review['image']) ?? ''  }}"
                                                                             alt="Avatar" class="rounded-circle" />
                                                                     </div>
                                                                     <div>
@@ -757,7 +757,7 @@
                                         @foreach ($logosdata ?? [] as $logo)
                                             <div class="swiper-slide">
 
-                                                <img src="{{ explode('/', $logo['image'])[0] === 'uploads' ? asset('storage/' . $logo['image']) ?? '' : asset($logo['image']) ?? '' }}"
+                                                <img src="{{  asset('logo/' . $logo['image']) ?? ''  }}"
                                                     alt="client logo" class="client-logo" />
                                             </div>
                                         @endforeach
@@ -800,7 +800,7 @@
                                         <div class="col-lg-3 col-sm-6">
                                             <div class="card mt-3 mt-lg-0 shadow-none">
                                                 <div class="{{ $data['color_label'] }} position-relative team-image-box">
-                                                    <img src="{{ explode('/', $data['image'])[0] === 'uploads' ? asset('storage/' . $data['image']) ?? '' : asset($data['image']) ?? '' }}"
+                                                    <img src="{{  asset('teamFile/' . $data['image']) ?? '' }}"
                                                         class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl"
                                                         alt="human image" />
                                                 </div>
@@ -837,7 +837,7 @@
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="card mt-3 mt-lg-0 shadow-none">
                                             <div class="{{ $data['color_label'] }} position-relative team-image-box">
-                                                <img src="{{ explode('/', $data['image'])[0] === 'uploads' ? asset('storage/' . $data['image']) ?? '' : asset($data['image']) ?? '' }}"
+                                                <img src="{{  asset('teamFile/' . $data['image']) ?? '' }}"
                                                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl"
                                                     alt="human image" />
                                             </div>
@@ -1154,7 +1154,7 @@
                                     <div class="col-sm-6 col-lg-3">
                                         <div class="card border {{ $fun['border_color'] }} shadow-none">
                                             <div class="card-body text-center">
-                                                <img src="{{ explode('/', $fun['image'])[0] === 'uploads' ? asset('storage/' . $fun['image']) ?? '' : asset($fun['image']) ?? '' }}"
+                                                <img src="{{  asset('funFile/' . $fun['image']) ?? ''}}"
                                                     alt="laptop" class="mb-2" />
                                                 <h5 class="h2 mb-1">{{ $fun['event'] }}</h5>
                                                 <p class="fw-medium mb-0">
@@ -1183,7 +1183,7 @@
                                 <div class="col-sm-6 col-lg-3">
                                     <div class="card border {{ $fun['border_color'] }} shadow-none">
                                         <div class="card-body text-center">
-                                            <img src="{{ explode('/', $fun['image'])[0] === 'uploads' ? asset('storage/' . $fun['image']) ?? '' : asset($fun['image']) ?? '' }}"
+                                            <img src="{{  asset('funFile/' . $fun['image']) ?? ''}}"
                                                 alt="laptop" class="mb-2" />
                                             <h5 class="h2 mb-1">{{ $fun['event'] }}</h5>
                                             <p class="fw-medium mb-0">
@@ -1224,7 +1224,7 @@
                     <div class="row gy-5">
                         <div class="col-lg-5">
                             <div class="text-center">
-                                <img src="{{ explode('/', $faqs->image)[0] === 'uploads' ? asset('storage/' . $faqs->image) ?? '' : asset($faqs->image) ?? '' }}"
+                                <img src="{{  asset('faqFile/' . $faqs->image) ?? ''  }}"
                                     alt="faq boy with logos" class="faq-image" />
                             </div>
                         </div>
@@ -1280,7 +1280,7 @@
                                 class="btn btn-lg btn-primary">{{ $value->button_text_cta ?? '' }}</a>
                         </div>
                         <div class="col-lg-6 pt-lg-5 text-center text-lg-end">
-                            <img src="{{ explode('/', $value->image_cta)[0] === 'uploads' ? asset('storage/' . $value->image_cta) ?? '' : asset($value->image_cta) ?? '' }}"
+                            <img src="{{  asset('contactFile/' . $value->image_cta) ?? ''  }}"
                                 alt="cta dashboard" class="img-fluid" />
                         </div>
                     </div>
@@ -1298,7 +1298,7 @@
                     <div class="row gy-4">
                         <div class="col-lg-5">
                             <div class="contact-img-box position-relative border p-2 h-100">
-                                <img src="{{ explode('/', $value->image_contact)[0] === 'uploads' ? asset('storage/' . $value->image_contact) ?? '' : asset($value->image_contact) ?? '' }}"
+                                <img src="{{  asset('contactFile/' . $value->image_contact) ?? '' }}"
                                     alt="cta dashboard" alt="contact customer service"
                                     class="contact-img w-100 scaleX-n1-rtl" />
                                 <div class="pt-3 px-4 pb-1">

@@ -49,7 +49,7 @@
                     alert('Data created successfully')
                     var fun = data.fun;
                     var newRow = '<tr>' +
-                        '<td><img src="{{ asset('storage/') }}/' + fun.image +
+                        '<td><img src="{{ asset('funFile/') }}/' + fun.image +
                         '" alt="Image" style="max-width: 100px; max-height: 100px;"></td>' +
                         '<td> <input readonly type="text" value="' + fun.event +
                         '" name="event" class="form-control"> </td>' +
@@ -112,7 +112,7 @@
             var borderColor = $(this).data('border-color');
 
             $('#editFunForm').attr('action', '/updatefun/' + id);
-            $('#previewImageEdit').attr('src', '{{ asset('storage/') }}/' + image);
+            $('#previewImageEdit').attr('src', '{{ asset('funFile/') }}/' + image);
             $('#event_edit').val(event);
             $('#title_edit').val(title);
             $('#text_edit').val(text);
