@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="{{ asset(mix('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')) }}" />
 <link rel="stylesheet" href="../../assets/vendor/libs/typeahead-js/typeahead.css" />
 <link rel="stylesheet" href="../../assets/vendor/libs/dropzone/dropzone.css" />
-<!--Rawannnnnnnnnn Busnissss -->
+
 
 <!-- end busnusssssss -->
 
@@ -27,20 +27,19 @@
     <!-- Page -->
     <link rel="stylesheet" href="../../assets/vendor/css/pages/page-auth.css" />
 
-
-<link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/select2/select2.css'))}}" />
+    <link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/select2/select2.css'))}}" />
+    
 <!-- Development Styles -->
-<link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/tagify/tagify.css'))}}" />
+
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/css/pages/page-auth.css'))}}">
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/sweetalert2/sweetalert2.css'))}}" />
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/toastr/toastr.css'))}}" />
 <link rel="stylesheet" href="{{asset(mix('assets/vendor/libs/animate-css/animate.css'))}}" />
 <link rel="stylesheet" href="../../assets/vendor/libs/apex-charts/apex-charts.css" />
-
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css'>
 <!-- Form Repeater -->
 
 <!-- End Form Repeater -->
-
 
 <!-- End Development Styles -->
 

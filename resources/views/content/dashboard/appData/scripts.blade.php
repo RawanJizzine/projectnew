@@ -16,14 +16,16 @@
                 success: function(response) {
                     $('.validation-errors').remove();
                     console.log(response);
-                    alert('Data created successfully')
+                    $('#statusSuccessModal').modal('show');
                 },
                 error: function(error) {
                     console.error('Error:', error);
-                    alert('Error Here!')
+                    
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
 
+                    }else{
+                        $('#statusErrorsModal').modal('show');
                     }
                 }
             });

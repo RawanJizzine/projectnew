@@ -79,7 +79,7 @@ class FeatureController extends Controller
             ->first();
        
         $path = time() . '.' . $data['image']->extension();
-        $data['image']->move(public_path('images'), $path);
+        $data['image']->move(public_path('features'), $path);
         $feature =  FeaturesData::create([
             'features_id' => $feature_data->id,
             'title' => $data['title'],

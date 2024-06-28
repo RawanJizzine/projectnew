@@ -160,7 +160,7 @@ Route::get('/appointmentsCalanderDashboard', [AppointmentsController::class, 'sh
 
 //order dashboard
 Route::get('/orderDashboard', [ProductController::class, 'showOrderDashboard'])->name('order-page');
-Route::put('/orderDashboard/{orderId}', [ProductController::class, 'markAsCompleted']);
+Route::put('/orderDashboardstatus/{orderId}', [ProductController::class, 'markAsCompleted']);
 Route::get('/otherpage', [ProductController::class, 'showDetailsOrder'])->name('otherpage');
 Route::get('/create-order-dashboard', [ProductController::class, 'showCreateOrderDashboard'])->name('create-order-dashboard');
 Route::get('/product-category/{categoryId}', [ProductController::class, 'getProductsByCategory'])->name('get-product');
@@ -175,6 +175,8 @@ Route::get('/allpatientData', [AppointmentsController::class, 'showAllPatientDat
 
 Route::get('/patientData', [AppointmentsController::class, 'showpatientData'])->name('patient-data-page');
 Route::post('/save-patient-info', [AppointmentsController::class, 'storePatientData'])->name('files.store');
+Route::delete('/deletepatientdata/{id}', [AppointmentsController::class, 'destroypatientdata'])->name('plan.delete');
+
 Route::get('/createpatientData', [AppointmentsController::class, 'showcreatepatientData'])->name('create-patient-data');
 //ecommerce
 Route::get('/dashboard/ecommerce', [EcommerceController::class, 'index'])->name('ecommerce-page');

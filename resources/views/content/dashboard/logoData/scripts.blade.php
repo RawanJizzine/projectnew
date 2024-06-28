@@ -43,7 +43,7 @@
                 success: function(data) {
                     console.log(data);
                     $('.validation-errors').remove();
-                    alert('Data created successfully')
+                    $('#statusSuccessModal').modal('show');
                     var logo = data.logo;
                     var newRow = '<tr>' +
 
@@ -65,10 +65,12 @@
                     $('#createFeatureForm')[0].reset();
                 },
                 error: function(error) {
-                    alert('Error Here!')
+                   
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
                     }
                 }
             });
@@ -105,6 +107,9 @@
             $('#previewImageEdit').attr('src', '{{ asset('logo/') }}/' + image);
         });
 
+        $('#SuccessOkBtn').click(function() {
+            location.reload();
+        });
         $('#updateLogoBtn').click(function() {
             var form = document.getElementById('editLogoForm');
             var formData = new FormData(form);
@@ -116,15 +121,18 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    alert('Data updated successfully');
+                    $('#statusSuccessModal').modal('show');
                     $('#editLogo').modal('hide');
-                    location.reload();
+                   
                 },
                 error: function(error) {
-                    alert('Error Here!');
+                 
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
+                        $('#editLogo').modal('hide');
                     }
                 }
             });
@@ -157,31 +165,38 @@
     });
 
     $(document).ready(function() {
-        $(".delete-btn").on("click", function() {
-            var $rowToDelete = $(this).closest('tr');
+        let appointmentIdToDelete;
+        let $rowToDelete;
 
-            var id = $(this).data('id');
-            var url = '/logo/' + id;
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            appointmentIdToDelete = $(this).data('id');
+            $rowToDelete = $(this).closest('tr');
+            $('#deleteConfirmationModal').modal('show');
+        });
 
+        $('#confirmDeleteBtn').click(function() {
+            $.ajax({
+                url: '/logo/' + appointmentIdToDelete,
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteSuccessModal').modal('show');
+                    $rowToDelete.remove();
+                },
+                error: function(error) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteErrorModal').modal('show');
+                    console.error('Error:', error);
+                }
+            });
+        });
 
-            if (confirm('Are you sure you want to delete this?')) {
-                $.ajax({
-                    url: url,
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    success: function(data) {
-                        console.log(data);
-                        alert('Delete this data successfully')
-                        $rowToDelete.remove();
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                        alert('Delete this data Not successfully')
-                    }
-                });
-            }
+        $('#deleteSuccessOkBtn').click(function() {
+            location.reload();
         });
     });
 </script>

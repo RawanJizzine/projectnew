@@ -18,14 +18,16 @@
                 },
                 success: function(data) {
                     $('.validation-errors').remove();
-                    alert('Data created successfully')
+                    $('#statusSuccessModal').modal('show');
                 },
                 error: function(error) {
-                    alert("Error Here!");
+                
                     console.error('Error:', error);
 
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
                     }
                 }
             });
@@ -86,7 +88,7 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    alert('Data created successfully')
+                    $('#statusSuccessModal').modal('show');
                     var team = data.team;
                     var newRow = '<tr>' +
 
@@ -111,10 +113,12 @@
                     $('#createTeamForm')[0].reset();
                 },
                 error: function(error) {
-                    alert('create new team data not success')
+                   
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
                     }
                 }
             });
@@ -160,7 +164,9 @@
         $('#updateTeamBtn').click(function() {
             var form = document.getElementById('editTeamForm');
             var formData = new FormData(form);
-
+            $('#SuccessOkBtn').click(function() {
+            location.reload();
+        });
             $.ajax({
                 type: 'POST',
                 url: $('#editTeamForm').attr('action'),
@@ -213,31 +219,38 @@
     });
 
     $(document).ready(function() {
-        $(".delete-btn").on("click", function() {
-            var $rowToDelete = $(this).closest('tr');
+        let appointmentIdToDelete;
+        let $rowToDelete;
 
-            var id = $(this).data('id');
-            var url = '/team/' + id;
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            appointmentIdToDelete = $(this).data('id');
+            $rowToDelete = $(this).closest('tr');
+            $('#deleteConfirmationModal').modal('show');
+        });
 
+        $('#confirmDeleteBtn').click(function() {
+            $.ajax({
+                url: '/team/' + appointmentIdToDelete,
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteSuccessModal').modal('show');
+                    $rowToDelete.remove();
+                },
+                error: function(error) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteErrorModal').modal('show');
+                    console.error('Error:', error);
+                }
+            });
+        });
 
-            if (confirm('Are you sure you want to delete this?')) {
-                $.ajax({
-                    url: url,
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    success: function(data) {
-                        alert('Data deleted successfully')
-                        console.log(data);
-                        $rowToDelete.remove();
-                    },
-                    error: function(error) {
-                        alert("Data not found")
-                        console.error('Error:', error);
-                    }
-                });
-            }
+        $('#deleteSuccessOkBtn').click(function() {
+            location.reload();
         });
     });
 </script>

@@ -45,14 +45,16 @@
                 success: function(response) {
                     $('.validation-errors').remove();
                     console.log(response);
-                    alert("save Data Successfuly")
+                    $('#statusSuccessModal').modal('show');
                 },
                 error: function(error) {
-                    alert('Error Here!')
+                   
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
 
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
                     }
                 }
             });

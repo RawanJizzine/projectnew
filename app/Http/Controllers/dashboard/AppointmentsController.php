@@ -80,6 +80,7 @@ class AppointmentsController extends Controller
     public function destroy($id)
 {
     // Find the appointment by its ID
+   
     $appointment = Appointment::findOrFail($id);
 
     // Get the date and time of the appointment to be deleted
@@ -260,6 +261,7 @@ public function showAppointmentsCalanderPage($id)
                 'file.*.title' => 'required|string|max:255',
                 'file.*.file' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:10000'
             ]);
+           
             // Create new patient record
             $patient = Patient::create([
                 'fullname' => $request->patientfullname,
@@ -284,6 +286,29 @@ public function showAppointmentsCalanderPage($id)
         }
     
         return response()->json(['success' => true, 'message' => 'Patient information saved successfully!']);
+    }
+    public function destroypatientdata( $id   ){
+ 
+        $patient = Patient::find($id);
+
+        // Check if patient exists
+        if (!$patient) {
+          
+            return response()->json(['error' => 'Patient not found.']);
+        }
+
+        // Delete the patient
+        $patient->delete();
+
+        // Redirect back with a success message
+       
+        return response()->json(['success' => 'Patient deleted successfully.']);
+
+
+
+
+
+
     }
 
     public function indexAppointmentsAvailability()

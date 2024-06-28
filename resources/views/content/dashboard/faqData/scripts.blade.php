@@ -42,7 +42,7 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    alert('Data created successfully')
+                    $('#statusSuccessModal').modal('show');
                     var faq = data.faq;
                     var newRow = '<tr>' +
                         '<td> <input readonly type="text" value="' + faq.title +
@@ -67,6 +67,8 @@
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
                     }
                 }
             });
@@ -109,13 +111,15 @@
                 },
                 success: function(data) {
                     $('.validation-errors').remove();
-                    alert('Data created successfully')
+                    $('#statusSuccessModal').modal('show');
                 },
                 error: function(error) {
                     console.error('Error:', error);
-                    alert('Error Here!')
+                   
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
                     }
                 }
             });
@@ -135,6 +139,9 @@
     });
 
     $(document).ready(function() {
+        $('#SuccessOkBtn').click(function() {
+            location.reload();
+        });
         $('.edit-btn').click(function() {
             var id = $(this).data('id');
 
@@ -159,15 +166,17 @@
                 contentType: false,
                 success: function(response) {
                     $('.validation-errors').remove();
-                    alert('Data updated successfully');
+                    $('#statusSuccessModal').modal('show');
                     $('#editFaq').modal('hide');
                     location.reload();
                 },
                 error: function(error) {
                     console.error('Error:', error);
-                    alert('Error Here!')
+                  
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
                     }
                 }
             });
@@ -191,29 +200,38 @@
     });
 
     $(document).ready(function() {
-        $(".delete-btn").on("click", function() {
-            var $rowToDelete = $(this).closest('tr');
+        let appointmentIdToDelete;
+        let $rowToDelete;
 
-            var id = $(this).data('id');
-            var url = '/faq/' + id;
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            appointmentIdToDelete = $(this).data('id');
+            $rowToDelete = $(this).closest('tr');
+            $('#deleteConfirmationModal').modal('show');
+        });
 
+        $('#confirmDeleteBtn').click(function() {
+            $.ajax({
+                url: '/faq/' + appointmentIdToDelete,
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteSuccessModal').modal('show');
+                    $rowToDelete.remove();
+                },
+                error: function(error) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteErrorModal').modal('show');
+                    console.error('Error:', error);
+                }
+            });
+        });
 
-            if (confirm('Are you sure you want to delete this?')) {
-                $.ajax({
-                    url: url,
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    success: function(data) {
-                        console.log(data);
-                        $rowToDelete.remove();
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
-                });
-            }
+        $('#deleteSuccessOkBtn').click(function() {
+            location.reload();
         });
     });
 </script>

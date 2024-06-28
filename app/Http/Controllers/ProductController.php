@@ -99,6 +99,7 @@ class ProductController extends Controller
         'quantity' => 'required|integer',
         'sku' => 'required|string',
         'barcode' => 'nullable|string',
+        'initial_price'=>'required|numeric',
     ]);
 
     $path = time() . '.' . $data['image']->extension();
@@ -114,6 +115,8 @@ class ProductController extends Controller
         'quantity' => $data['quantity'],
         'sku' => $data['sku'],
         'barcode' => $data['barcode'],
+        'initial_price'=>$data['initial_price']
+
     ]);
 
     return response()->json(['message' => 'Product saved successfully', 'product' => $product]);
@@ -130,10 +133,12 @@ public function updateProducts(Request $request, $id)
         'price_edit' => 'required|numeric|min:0', // Example validation for price
         'quantity_edit' => 'required|integer|min:0', // Example validation for quantity
         'sku_edit' => 'required|string', // Example validation for SKU
-        'barcode_edit' => 'required|string', // Example validation for barcode
+        'barcode_edit' => 'required|string',
+        'initial_price_edit'=>'required|numeric|min:0',
+        // Example validation for barcode
     ]);
   
-
+    
     // Find the product by ID
     $product = Product::find($id);
 
@@ -146,12 +151,12 @@ public function updateProducts(Request $request, $id)
     if ($request->hasFile('image_edit')) {
         $path = time() . '.' . $request->image_edit->extension();
         $request->image_edit->move(public_path('images'), $path);
-
+        $product->image = $path;
     }
 
     // Update product attributes
     $product->title = $validatedData['title_edit'];
-    $product->image = $path;
+   
     $product->description = $validatedData['description_edit'];
     // Add updates for other fields as needed
     $product->category_id = $validatedData['category_edit'];
@@ -159,7 +164,7 @@ public function updateProducts(Request $request, $id)
     $product->quantity = $validatedData['quantity_edit'];
     $product->sku = $validatedData['sku_edit'];
     $product->barcode = $validatedData['barcode_edit'];
-
+    $product->initial_price = $validatedData['initial_price_edit'];
     // Save the changes to the database
     $product->save();
 
@@ -300,21 +305,23 @@ public function showOrderDashboard(Request $request)
 
 public function markAsCompleted($orderId)
     {
-        
+      
         $order = Order::findOrFail($orderId);
-        $order->status == 'completed'?'pending':'completed';
+        $order->status = $order->status == 'pending' ? 'completed' : 'pending';
         $order->save();
 
         return response()->json(['message' => 'Order status updated to completed']);
     }
     public function showDetailsOrder(Request $request)
     {
-      
         $orderId =  $request->query('orderId');
+      
+        
         $order=Order::findOrFail($orderId);
         $orders = OrderItem::where('order_id', $orderId)->with('order', 'product')
         ->get();
         $data['orders']=$orders;
+       
         
         $data['order']=$order;
         return view('content.dashboard.orderData.detailsOrder',$data );

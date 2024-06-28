@@ -41,7 +41,7 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    alert('Data created successfully');
+                    $('#statusSuccessModal').modal('show');
                     var feature = data.feature;
                     itemCount++;
                     var newRow = '<tr>' +
@@ -54,8 +54,8 @@
                         '" name="location" class="form-control" readonly > </td>' +
                         '<td> <input type="text" value="' + feature.price +
                         '" name="title" class="form-control" readonly > </td>'
-                        
-                         +
+
+                        +
                         '<td>' +
                         '<a href="" class="btn btn-sm btn-primary">Edit</a>' +
                         ' ' +
@@ -72,11 +72,15 @@
                 },
                 error: function(error) {
 
-                    console.error('Error:', error);
+
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    } else {
+                        $('#add_feature_modal').modal('hide');
+                        $('#createFeatureForm')[0].reset();
+                        $('#statusErrorsModal').modal('show');
                     }
-                    alert('Error Here!')
+
                 }
             });
         });
@@ -123,15 +127,17 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 },
                 success: function(data) {
-                    alert('Data created successfully');
+                    $('#statusSuccessModal').modal('show');
                 },
                 error: function(error) {
                     console.error('Error:', error);
 
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    } else {
+                        $('#statusErrorsModal').modal('show');
                     }
-                    alert('Error Here!');
+
                 }
             });
         });
@@ -157,12 +163,12 @@
             var id = $(this).data('id');
             var image = $(this).data('image');
             var title = $(this).data('title');
-            var location= $(this).data('location');
+            var location = $(this).data('location');
             var description = $(this).data('description');
             var subdescription = $(this).data('subdescription');
             var price = $(this).data('price');
-            
-            
+
+
             $('#editFeatureForm').attr('action', '/updatefeature/' + id);
             $('#previewImageEdit').attr('src', '{{ asset('features/') }}/' + image);
             $('#title_edit').val(title);
@@ -172,7 +178,9 @@
             $('#price_edit').val(price);
 
         });
-
+        $('#SuccessOkBtn').click(function() {
+            location.reload();
+        });
         $('#updateFeatureBtn').click(function() {
             var form = document.getElementById('editFeatureForm');
             var formData = new FormData(form);
@@ -185,17 +193,21 @@
                 contentType: false,
                 success: function(response) {
                     $('.validation-errors').remove();
-                    alert('Data updated successfully')
-                    $('#editFeature').modal('hide');
-                    location.reload();
+
+
+                    $('#statusSuccessModal').modal('show');
+
                 },
                 error: function(error) {
 
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    } else {
+                        $('#statusErrorsModal').modal('show');
+                        $('#editFeature').modal('hide');
                     }
-                    alert('Error Here!')
+
                 }
             });
 
@@ -235,28 +247,38 @@
     });
 
     $(document).ready(function() {
-        $(".delete-btn").on("click", function() {
-            var $rowToDelete = $(this).closest('tr');
-            var id = $(this).data('id');
-            var url = '/feature/' + id;
-            if (confirm('Are you sure you want to delete this?')) {
-                $.ajax({
-                    url: url,
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    success: function(data) {
-                        console.log(data);
-                        $rowToDelete.remove();
-                        alert('Data deleted successfully');
-                    },
-                    error: function(error) {
-                        alert('Error Here!')
-                        console.error('Error:', error);
-                    }
-                });
-            }
+        let appointmentIdToDelete;
+        let $rowToDelete;
+
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            appointmentIdToDelete = $(this).data('id');
+            $rowToDelete = $(this).closest('tr');
+            $('#deleteConfirmationModal').modal('show');
+        });
+
+        $('#confirmDeleteBtn').click(function() {
+            $.ajax({
+                url: '/feature/' + appointmentIdToDelete,
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteSuccessModal').modal('show');
+                    $rowToDelete.remove();
+                },
+                error: function(error) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteErrorModal').modal('show');
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        $('#deleteSuccessOkBtn').click(function() {
+            location.reload();
         });
     });
 </script>

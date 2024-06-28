@@ -18,7 +18,7 @@ class HomeController extends Controller
     }
     public function createHomeData(Request $request)
     {
-     
+   
         $user_id = Auth::id();
 
         if ($request->id) {

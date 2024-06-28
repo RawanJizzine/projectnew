@@ -1,5 +1,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $("#open_modal_button").click(function() {
@@ -8,7 +9,7 @@
         });
     });
 
-
+  
     $(document).ready(function() {
         $('#submitFormBtn').click(function(e) {
             e.preventDefault();
@@ -28,10 +29,12 @@
                     categories: selectedCategories
                 },
                 success: function(response) {
-                    alert(response.message);
+                    $('.validation-errors').remove();
+                    $('#statusSuccessModal').modal('show');
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
+                    $('#statusErrorsModal').modal('show');
                 }
             });
         });
@@ -69,7 +72,8 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    alert('Data created successfully');
+                    $('.validation-errors').remove();
+                    $('#statusSuccessModal').modal('show');
                     var product = data.product;
                     itemCount++;
                     var newRow = '<tr>' +
@@ -105,8 +109,11 @@
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show');
+
                     }
-                    alert('Error Here!')
+                   
                 }
             });
         });
@@ -147,6 +154,7 @@
 
             var barcode = $(this).data('barcode');
             var category = $(this).data('category');
+            var initialprice = $(this).data('initialprice');
             var categoryId = category.id;
 
             $('#category_edit').val(categoryId);
@@ -160,6 +168,8 @@
             $('#sku_edit').val(sku);
             $('#barcode_edit').val(barcode);
             $('#quantity_edit').val(quantity);
+            
+            $('#initial_price_edit').val(initialprice);
 
 
 
@@ -168,6 +178,11 @@
         $('#updateProductBtn').click(function() {
             var form = document.getElementById('editProductForm');
             var formData = new FormData(form);
+            
+            $('#SuccessOkBtn').click(function() {
+            location.reload();
+        });
+
 
             $.ajax({
                 type: 'POST', // Use POST here
@@ -177,17 +192,19 @@
                 contentType: false,
                 success: function(response) {
                     $('.validation-errors').remove();
-                    alert('Data updated successfully')
+                    $('#statusSuccessModal').modal('show');
                     $('#editProduct').modal('hide');
-                    location.reload();
+                   
                 },
                 error: function(error) {
 
                     console.error('Error:', error);
                     if (error.responseJSON && error.responseJSON.errors) {
                         displayValidationErrors(error.responseJSON.errors);
+                    }else{
+                        $('#statusErrorsModal').modal('show'); 
                     }
-                    alert('Error Here!')
+                    
                 }
             });
 
@@ -226,29 +243,40 @@
         });
     });
 
+   
     $(document).ready(function() {
-        $(".delete-btn").on("click", function() {
-            var $rowToDelete = $(this).closest('tr');
-            var id = $(this).data('id');
-            var url = '/product/' + id;
-            if (confirm('Are you sure you want to delete this?')) {
-                $.ajax({
-                    url: url,
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    success: function(data) {
-                        console.log(data);
-                        $rowToDelete.remove();
-                        alert('Data deleted successfully');
-                    },
-                    error: function(error) {
-                        alert('Error Here!')
-                        console.error('Error:', error);
-                    }
-                });
-            }
+        let appointmentIdToDelete;
+        let $rowToDelete;
+
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            appointmentIdToDelete = $(this).data('id');
+            $rowToDelete = $(this).closest('tr');
+            $('#deleteConfirmationModal').modal('show');
+        });
+
+        $('#confirmDeleteBtn').click(function() {
+            $.ajax({
+                url: '/product/' + appointmentIdToDelete,
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteSuccessModal').modal('show');
+                    $rowToDelete.remove();
+                },
+                error: function(error) {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#deleteErrorModal').modal('show');
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        $('#deleteSuccessOkBtn').click(function() {
+            location.reload();
         });
     });
 
