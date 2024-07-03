@@ -44,7 +44,7 @@ class FeatureController extends Controller
     public function createFeature(Request $request)
     {
         $data = $request->validate([
-            'title' => 'required|string',
+            'titleone' => 'required|string',
             'first_description_features' => 'required|string',
             'second_description_features' => 'required|string',
             'tertiary_description_features' => 'required|string',
@@ -54,7 +54,7 @@ class FeatureController extends Controller
         $featuresdata = Feature::updateOrCreate([
             'user_id' => $user_id,
         ], [
-            'title' => $data['title'],
+            'title' => $data['titleone'],
             'main_description' => $data['first_description_features'],
             'secondary_description' => $data['second_description_features'],
             'tertiary_description' => $data['tertiary_description_features'],

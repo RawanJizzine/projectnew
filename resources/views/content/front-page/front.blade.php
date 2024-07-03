@@ -279,11 +279,11 @@
             box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
                 0 10px 10px rgba(0, 0, 0, 0.22);
             transition: .4s;
-           
+
 
         }
 
-      
+
         .imgClass {
             width: 200px;
             height: 200px;
@@ -347,9 +347,12 @@
             border-bottom-right-radius: 20px;
             border-bottom-left-radius: 20px;
         }
+
         .buttonClass:hover {
-            background: #fbdddd;/* Color change on hover */
-}
+            background: #fbdddd;
+            /* Color change on hover */
+        }
+
         .buy-1 {
             background-color: #7367f0;
         }
@@ -419,7 +422,7 @@
                                 <div id="heroAnimationImg" class="position-relative hero-dashboard-img">
 
                                     <div id="heroAnimationImg" class="position-relative hero-dashboard-img">
-                                        <img  src="{{ asset('homeFile/' . $home->image_link_dashboard) }}"
+                                        <img src="{{ asset('homeFile/' . $home->image_link_dashboard) }}"
                                             alt="hero dashboard" class="animation-img">
 
 
@@ -441,85 +444,43 @@
 
 
         <!-- Useful features: Start -->
-        @if ($enter_auth === 'true')
-            @if (auth()->check() &&
-                    (auth()->user()->role == 'admin' ||
-                        (auth()->user()->role == 'user' &&
-                            ($subscription && in_array($subscription->plan_name, ['plan 1', 'plan 2', 'plan 3'])))))
-                @if ($feature)
-                    <section id="landingFeatures" class="section-py landing-features">
-                        <div class="container">
-                            <div class="text-center mb-3 pb-1">
-                                <span class="badge bg-label-primary">{{ $feature->title ?? '' }}</span>
-                            </div>
-                            <h3 class="text-center mb-1">
-                                <span class="section-title">{{ $feature->main_description ?? '' }}</span>
-                                {{ $feature->secondary_description ?? '' }}
-                            </h3>
-                            <p class="text-center mb-3 mb-md-5 pb-3">
-                                {{ $feature->tertiary_description ?? '' }}
-                            </p>
-                            @if ($feature_data)
-                                <div class="features-icon-wrapper row gx-0 gy-4 g-sm-5">
-                                    @foreach ($feature_data ?? [] as $item)
-                                        <div class="col-lg-4 col-sm-6 text-center features-icon-box">
-                                            <div class="text-center mb-3">
 
-                                                <img height="50" width="80"
-                                                    src="{{  asset('features/' . $item['image']) ?? ''  }}"
-                                                    alt="Icon" />
-                                            </div>
-                                            <h5 class="mb-3">{{ $item['title'] }}</h5>
-                                            <p class="features-icon-description">
-                                                {{ $item['description'] }}
-                                            </p>
-                                        </div>
-                                    @endforeach
-
-                                </div>
-                            @endif
-                        </div>
-                    </section>
-                @endif
-
-            @endif
-        @else
-            @if ($feature)
-                <section id="landingFeatures" class="section-py landing-features">
-                    <div class="container">
-                        <div class="text-center mb-3 pb-1">
-                            <span class="badge bg-label-primary">{{ $feature->title ?? '' }}</span>
-                        </div>
-                        <h3 class="text-center mb-1">
-                            <span class="section-title">{{ $feature->main_description ?? '' }}</span>
-                            {{ $feature->secondary_description ?? '' }}
-                        </h3>
-                        <p class="text-center mb-3 mb-md-5 pb-3">
-                            {{ $feature->tertiary_description ?? '' }}
-                        </p>
-                        @if ($feature_data)
-                            <div class="features-icon-wrapper row gx-0 gy-4 g-sm-5">
-                                @foreach ($feature_data ?? [] as $item)
-                                    <div class="col-lg-4 col-sm-6 text-center features-icon-box card  shadow-lg  ">
-                                        <div class="text-center mb-3">
-
-                                            <img src="{{  asset('features/' . $item['image']) ?? ''  }}"
-                                                alt="Icon" />
-                                        </div>
-                                        <h5 class="mb-3 title-text ">{{ $item['title'] }}</h5>
-                                        <p class="features-icon-description description-text">
-                                            {{ $item['sub_description'] }}
-                                        </p>
-                                        <a href="{{ route('appointment-page', $item['id'] ) }}" class="read-more-link">READ MORE</a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
+        @if ($feature)
+            <section id="landingFeatures" class="section-py landing-features">
+                <div class="container">
+                    <div class="text-center mb-3 pb-1">
+                        <span class="badge bg-label-primary">{{ $feature->title ?? '' }}</span>
                     </div>
-                </section>
-            @endif
+                    <h3 class="text-center mb-1">
+                        <span class="section-title">{{ $feature->main_description ?? '' }}</span>
+                        {{ $feature->secondary_description ?? '' }}
+                    </h3>
+                    <p class="text-center mb-3 mb-md-5 pb-3">
+                        {{ $feature->tertiary_description ?? '' }}
+                    </p>
+                    @if ($feature_data)
+                        <div class="features-icon-wrapper row gx-0 gy-4 g-sm-5">
+                            @foreach ($feature_data ?? [] as $item)
+                                <div class="col-lg-4 col-sm-6 text-center features-icon-box card  shadow-lg  ">
+                                    <div class="text-center mb-3">
 
+                                        <img src="{{ asset('features/' . $item['image']) ?? '' }}" alt="Icon" />
+                                    </div>
+                                    <h5 class="mb-3 title-text ">{{ $item['title'] }}</h5>
+                                    <p class="features-icon-description description-text">
+                                        {{ $item['sub_description'] }}
+                                    </p>
+                                    <a href="{{ route('appointment-page', $item['id']) }}" class="read-more-link">READ
+                                        MORE</a>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </section>
         @endif
+
+
         <!-- Useful features: End -->
 
 
@@ -528,213 +489,89 @@
 
 
         <!-- Useful Reviews: Start -->
-        @if ($enter_auth === 'true')
-            @if (auth()->check() &&
-                    (auth()->user()->role == 'admin' ||
-                        (auth()->user()->role == 'user' && ($subscription && in_array($subscription->plan_name, ['plan 3'])))))
-                @if ($reviews)
-                    <section id="landingReviews" class="section-py bg-body landing-reviews pb-0">
-                        <!-- What people say slider: Start -->
-                        <div class="container">
-                            <div class="row align-items-center gx-0 gy-4 g-lg-5">
-                                <div class="col-md-6 col-lg-5 col-xl-3">
-                                    <div class="mb-3 pb-1">
-                                        <span class="badge bg-label-primary">{{ $reviews->title ?? '' }}</span>
-                                    </div>
-                                    <h3 class="mb-1"><span
-                                            class="section-title">{{ $reviews->first_description_review ?? '' }}</span>
-                                    </h3>
-                                    <p class="mb-3 mb-md-5">
-                                        {{ $reviews->second_description_review ?? '' }}<br class="d-none d-xl-block" />
-                                        {{ $reviews->tertiary_description_review ?? '' }}
-                                    </p>
-                                    <div class="landing-reviews-btns">
-                                        <button id="reviews-previous-btn"
-                                            class="btn btn-label-primary reviews-btn me-3 scaleX-n1-rtl" type="button">
-                                            <i class="ti ti-chevron-left ti-sm"></i>
-                                        </button>
-                                        <button id="reviews-next-btn"
-                                            class="btn btn-label-primary reviews-btn scaleX-n1-rtl" type="button">
-                                            <i class="ti ti-chevron-right ti-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-7 col-xl-9">
-                                    <div class="swiper-reviews-carousel overflow-hidden mb-5 pb-md-2 pb-md-3">
-                                        <div class="swiper" id="swiper-reviews">
-                                            @if ($review_data)
-                                                <div class="swiper-wrapper">
 
-                                                    @foreach ($review_data ?? [] as $key => $review)
-                                                        <div class="swiper-slide">
-                                                            <div class="card h-100">
-                                                                <div
-                                                                    class="card-body text-body d-flex flex-column justify-content-between h-100">
-                                                                    <div class="mb-3">
-                                                                        <img src="{{  asset('reviews/' . $review['icon']) ?? ''  }}"
-                                                                            alt="client logo"
-                                                                            class="client-logo img-fluid" />
-                                                                    </div>
-                                                                    <p>
-                                                                        {{ $review['description'] }}
-                                                                    </p>
-                                                                    <div class="text-warning mb-3">
-                                                                        @for ($i = 1; $i <= 5; $i++)
-                                                                            @if ($i <= $review['rating'])
-                                                                                <i class="ti ti-star-filled ti-sm"></i>
-                                                                            @else
-                                                                                <i class="ti ti-star ti-sm"></i>
-                                                                            @endif
-                                                                        @endfor
-                                                                    </div>
-                                                                    <div class="d-flex align-items-center">
-                                                                        <div class="avatar me-2 avatar-sm">
-                                                                            <img src="{{  asset('reviews/' . $review['image']) ?? ''  }}"
-                                                                                alt="Avatar" class="rounded-circle" />
-                                                                        </div>
-                                                                        <div>
-                                                                            <h6 class="mb-0">{{ $review['name'] }}</h6>
-                                                                            <p class="small text-muted mb-0">
-                                                                                {{ $review['position'] }}
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-
-                                                </div>
-                                            @endif
-                                            <div class="swiper-button-next"></div>
-                                            <div class="swiper-button-prev"></div>
-                                        </div>
-                                    </div>
-                                </div>
+        @if ($reviews)
+            <section id="landingReviews" class="section-py bg-body landing-reviews pb-0">
+                <!-- What people say slider: Start -->
+                <div class="container">
+                    <div class="row align-items-center gx-0 gy-4 g-lg-5">
+                        <div class="col-md-6 col-lg-5 col-xl-3">
+                            <div class="mb-3 pb-1">
+                                <span class="badge bg-label-primary">{{ $reviews->title ?? '' }}</span>
+                            </div>
+                            <h3 class="mb-1"><span
+                                    class="section-title">{{ $reviews->first_description_review ?? '' }}</span>
+                            </h3>
+                            <p class="mb-3 mb-md-5">
+                                {{ $reviews->second_description_review ?? '' }}<br class="d-none d-xl-block" />
+                                {{ $reviews->tertiary_description_review ?? '' }}
+                            </p>
+                            <div class="landing-reviews-btns">
+                                <button id="reviews-previous-btn"
+                                    class="btn btn-label-primary reviews-btn me-3 scaleX-n1-rtl" type="button">
+                                    <i class="ti ti-chevron-left ti-sm"></i>
+                                </button>
+                                <button id="reviews-next-btn" class="btn btn-label-primary reviews-btn scaleX-n1-rtl"
+                                    type="button">
+                                    <i class="ti ti-chevron-right ti-sm"></i>
+                                </button>
                             </div>
                         </div>
-                        <!-- What people say slider: End -->
-                        <hr class="m-0" />
-
-
-
-
-
-
-
-
-
-
-
-
-                        <!-- Logo slider: Start -->
-                        @if ($logosdata)
-                            <div class="container">
-                                <div class="swiper-logo-carousel py-4 my-lg-2">
-                                    <div class="swiper" id="swiper-clients-logos">
+                        <div class="col-md-6 col-lg-7 col-xl-9">
+                            <div class="swiper-reviews-carousel overflow-hidden mb-5 pb-md-2 pb-md-3">
+                                <div class="swiper" id="swiper-reviews">
+                                    @if ($review_data)
                                         <div class="swiper-wrapper">
 
-                                            @foreach ($logosdata ?? [] as $logo)
+                                            @foreach ($review_data ?? [] as $key => $review)
                                                 <div class="swiper-slide">
-
-                                                    <img src="{{  asset('logo/' . $logo['image']) ?? '' }}"
-                                                        alt="client logo" class="client-logo" />
-                                                </div>
-                                            @endforeach
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        <!-- Logo slider: End -->
-                    </section>
-                @endif
-
-            @endif
-        @else
-            @if ($reviews)
-                <section id="landingReviews" class="section-py bg-body landing-reviews pb-0">
-                    <!-- What people say slider: Start -->
-                    <div class="container">
-                        <div class="row align-items-center gx-0 gy-4 g-lg-5">
-                            <div class="col-md-6 col-lg-5 col-xl-3">
-                                <div class="mb-3 pb-1">
-                                    <span class="badge bg-label-primary">{{ $reviews->title ?? '' }}</span>
-                                </div>
-                                <h3 class="mb-1"><span
-                                        class="section-title">{{ $reviews->first_description_review ?? '' }}</span>
-                                </h3>
-                                <p class="mb-3 mb-md-5">
-                                    {{ $reviews->second_description_review ?? '' }}<br class="d-none d-xl-block" />
-                                    {{ $reviews->tertiary_description_review ?? '' }}
-                                </p>
-                                <div class="landing-reviews-btns">
-                                    <button id="reviews-previous-btn"
-                                        class="btn btn-label-primary reviews-btn me-3 scaleX-n1-rtl" type="button">
-                                        <i class="ti ti-chevron-left ti-sm"></i>
-                                    </button>
-                                    <button id="reviews-next-btn" class="btn btn-label-primary reviews-btn scaleX-n1-rtl"
-                                        type="button">
-                                        <i class="ti ti-chevron-right ti-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-7 col-xl-9">
-                                <div class="swiper-reviews-carousel overflow-hidden mb-5 pb-md-2 pb-md-3">
-                                    <div class="swiper" id="swiper-reviews">
-                                        @if ($review_data)
-                                            <div class="swiper-wrapper">
-
-                                                @foreach ($review_data ?? [] as $key => $review)
-                                                    <div class="swiper-slide">
-                                                        <div class="card h-100">
-                                                            <div
-                                                                class="card-body text-body d-flex flex-column justify-content-between h-100">
-                                                                <div class="mb-3">
-                                                                    <img src="{{  asset('reviews/' . $review['icon']) ?? ''  }}"
-                                                                        alt="client logo" class="client-logo img-fluid" />
+                                                    <div class="card h-100">
+                                                        <div
+                                                            class="card-body text-body d-flex flex-column justify-content-between h-100">
+                                                            <div class="mb-3">
+                                                                <img src="{{ asset('reviews/' . $review['icon']) ?? '' }}"
+                                                                    alt="client logo" class="client-logo img-fluid" />
+                                                            </div>
+                                                            <p>
+                                                                {{ $review['description'] }}
+                                                            </p>
+                                                            <div class="text-warning mb-3">
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    @if ($i <= $review['rating'])
+                                                                        <i class="ti ti-star-filled ti-sm"></i>
+                                                                    @else
+                                                                        <i class="ti ti-star ti-sm"></i>
+                                                                    @endif
+                                                                @endfor
+                                                            </div>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar me-2 avatar-sm">
+                                                                    <img src="{{ asset('reviews/' . $review['image']) ?? '' }}"
+                                                                        alt="Avatar" class="rounded-circle" />
                                                                 </div>
-                                                                <p>
-                                                                    {{ $review['description'] }}
-                                                                </p>
-                                                                <div class="text-warning mb-3">
-                                                                    @for ($i = 1; $i <= 5; $i++)
-                                                                        @if ($i <= $review['rating'])
-                                                                            <i class="ti ti-star-filled ti-sm"></i>
-                                                                        @else
-                                                                            <i class="ti ti-star ti-sm"></i>
-                                                                        @endif
-                                                                    @endfor
-                                                                </div>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar me-2 avatar-sm">
-                                                                        <img src="{{  asset('reviews/' . $review['image']) ?? ''  }}"
-                                                                            alt="Avatar" class="rounded-circle" />
-                                                                    </div>
-                                                                    <div>
-                                                                        <h6 class="mb-0">{{ $review['name'] }}</h6>
-                                                                        <p class="small text-muted mb-0">
-                                                                            {{ $review['position'] }}
-                                                                        </p>
-                                                                    </div>
+                                                                <div>
+                                                                    <h6 class="mb-0">{{ $review['name'] }}</h6>
+                                                                    <p class="small text-muted mb-0">
+                                                                        {{ $review['position'] }}
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @endforeach
+                                                </div>
+                                            @endforeach
 
-                                            </div>
-                                        @endif
-                                        <div class="swiper-button-next"></div>
-                                        <div class="swiper-button-prev"></div>
-                                    </div>
+                                        </div>
+                                    @endif
+                                    <div class="swiper-button-next"></div>
+                                    <div class="swiper-button-prev"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- What people say slider: End -->
-                    <hr class="m-0" />
+                </div>
+                <!-- What people say slider: End -->
+                <hr class="m-0" />
 
 
 
@@ -747,31 +584,30 @@
 
 
 
-                    <!-- Logo slider: Start -->
-                    @if ($logosdata)
-                        <div class="container">
-                            <div class="swiper-logo-carousel py-4 my-lg-2">
-                                <div class="swiper" id="swiper-clients-logos">
-                                    <div class="swiper-wrapper">
+                <!-- Logo slider: Start -->
+                @if ($logosdata)
+                    <div class="container">
+                        <div class="swiper-logo-carousel py-4 my-lg-2">
+                            <div class="swiper" id="swiper-clients-logos">
+                                <div class="swiper-wrapper">
 
-                                        @foreach ($logosdata ?? [] as $logo)
-                                            <div class="swiper-slide">
+                                    @foreach ($logosdata ?? [] as $logo)
+                                        <div class="swiper-slide">
 
-                                                <img src="{{  asset('logo/' . $logo['image']) ?? ''  }}"
-                                                    alt="client logo" class="client-logo" />
-                                            </div>
-                                        @endforeach
+                                            <img src="{{ asset('logo/' . $logo['image']) ?? '' }}" alt="client logo"
+                                                class="client-logo" />
+                                        </div>
+                                    @endforeach
 
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                    @endif
-                    <!-- Logo slider: End -->
-                </section>
-            @endif
-
+                    </div>
+                @endif
+                <!-- Logo slider: End -->
+            </section>
         @endif
+
 
         <!-- Useful Reviews: End -->
 
@@ -779,86 +615,44 @@
 
 
         <!-- Useful Teams: Start -->
-        @if ($enter_auth === 'true')
-            @if (auth()->check() &&
-                    (auth()->user()->role == 'admin' ||
-                        (auth()->user()->role == 'user' &&
-                            ($subscription && in_array($subscription->plan_name, ['plan 3', 'plan 2'])))))
-                @if ($team)
-                    <section id="landingTeam" class="section-py landing-team">
-                        <div class="container">
-                            <div class="text-center mb-3 pb-1">
-                                <span class="badge bg-label-primary">{{ $team->title ?? '' }}</span>
-                            </div>
-                            <h3 class="text-center mb-1"><span class="section-title">{{ $team->first_text ?? '' }}</span>
-                                {{ $team->second_text ?? '' }}</h3>
-                            <p class="text-center mb-md-5 pb-3">{{ $team->tertiary_text ?? '' }}?</p>
-                            @if ($team_data)
-                                <div class="row gy-5 mt-2">
 
-                                    @foreach ($team_data ?? [] as $data)
-                                        <div class="col-lg-3 col-sm-6">
-                                            <div class="card mt-3 mt-lg-0 shadow-none">
-                                                <div class="{{ $data['color_label'] }} position-relative team-image-box">
-                                                    <img src="{{  asset('teamFile/' . $data['image']) ?? '' }}"
-                                                        class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl"
-                                                        alt="human image" />
-                                                </div>
-                                                <div
-                                                    class="card-body border border-top-0 {{ $data['color_border'] }} text-center">
-                                                    <h5 class="card-title mb-0">{{ $data['name'] }}</h5>
-                                                    <p class="text-muted mb-0">{{ $data['position'] }}</p>
-                                                </div>
-                                            </div>
+        @if ($team)
+            <section id="landingTeam" class="section-py landing-team">
+                <div class="container">
+                    <div class="text-center mb-3 pb-1">
+                        <span class="badge bg-label-primary">{{ $team->title ?? '' }}</span>
+                    </div>
+                    <h3 class="text-center mb-1"><span class="section-title">{{ $team->first_text ?? '' }}</span>
+                        {{ $team->second_text ?? '' }}</h3>
+                    <p class="text-center mb-md-5 pb-3">{{ $team->tertiary_text ?? '' }}?</p>
+                    @if ($team_data)
+                        <div class="row gy-5 mt-2">
+
+                            @foreach ($team_data ?? [] as $data)
+                                <div class="col-lg-3 col-sm-6">
+                                    <div class="card mt-3 mt-lg-0 shadow-none">
+                                        <div class="{{ $data['color_label'] }} position-relative team-image-box">
+                                            <img src="{{ asset('teamFile/' . $data['image']) ?? '' }}"
+                                                class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl"
+                                                alt="human image" />
                                         </div>
-                                    @endforeach
-
-                                </div>
-                            @endif
-                        </div>
-                    </section>
-                @endif
-
-            @endif
-        @else
-            @if ($team)
-                <section id="landingTeam" class="section-py landing-team">
-                    <div class="container">
-                        <div class="text-center mb-3 pb-1">
-                            <span class="badge bg-label-primary">{{ $team->title ?? '' }}</span>
-                        </div>
-                        <h3 class="text-center mb-1"><span class="section-title">{{ $team->first_text ?? '' }}</span>
-                            {{ $team->second_text ?? '' }}</h3>
-                        <p class="text-center mb-md-5 pb-3">{{ $team->tertiary_text ?? '' }}?</p>
-                        @if ($team_data)
-                            <div class="row gy-5 mt-2">
-
-                                @foreach ($team_data ?? [] as $data)
-                                    <div class="col-lg-3 col-sm-6">
-                                        <div class="card mt-3 mt-lg-0 shadow-none">
-                                            <div class="{{ $data['color_label'] }} position-relative team-image-box">
-                                                <img src="{{  asset('teamFile/' . $data['image']) ?? '' }}"
-                                                    class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl"
-                                                    alt="human image" />
-                                            </div>
-                                            <div
-                                                class="card-body border border-top-0 {{ $data['color_border'] }} text-center">
-                                                <h5 class="card-title mb-0">{{ $data['name'] }}</h5>
-                                                <p class="text-muted mb-0">{{ $data['position'] }}</p>
-                                            </div>
+                                        <div
+                                            class="card-body border border-top-0 {{ $data['color_border'] }} text-center">
+                                            <h5 class="card-title mb-0">{{ $data['name'] }}</h5>
+                                            <p class="text-muted mb-0">{{ $data['position'] }}</p>
                                         </div>
                                     </div>
-                                @endforeach
+                                </div>
+                            @endforeach
 
-                            </div>
-                        @endif
-                    </div>
-                </section>
-
-
-            @endif
-
+                        </div>
+                    @endif
+                </div>
+            </section>
         @endif
+
+
+
 
         <!-- Useful Teams: End -->
 
@@ -869,267 +663,48 @@
 
 
         <!-- Useful  Pricing Plans: Start -->
-        @if ($enter_auth === 'false')
+       
 
-            @if (auth()->check() &&
-                    (auth()->user()->role == 'user' &&
-                        ($subscription && in_array($subscription->plan_name, ['plan 1', 'plan 2', 'plan 3']))))
+            <section id="landingPricing" class="section-py bg-body landing-pricing">
+                <div class="container">
+                    <div class="text-center mb-3 pb-1">
+                        <span class="badge bg-label-primary">Our Categories</span>
+                    </div>
+                    <h3 class="text-center mb-1"><span class="section-title"> Tailored pricing products </span>
+                        displayed for you</h3>
+                    <p class="text-center mb-4 pb-3">
+                        {{ $plan->tertiary_description ?? '' }}<br />
+                        {{ $plan->four_description ?? '' }}
 
-                <section id="landingPricing" class="section-py bg-body landing-pricing">
-                    <div class="container">
-                        <div class="text-center mb-3 pb-1">
-                            <span class="badge bg-label-primary">{{ $plan->title ?? '' }}</span>
-                        </div>
-                        <h3 class="text-center mb-1"><span
-                                class="section-title">{{ $plan->first_description ?? '' }}</span>
-                            {{ $plan->second_description ?? '' }}</h3>
-                        <p class="text-center mb-4 pb-3">
-                            {{ $plan->tertiary_description ?? '' }}<br />
-                            {{ $plan->four_description ?? '' }}
+                    </p>
 
-                        </p>
-                        <div class="text-center mb-5">
-                            <div class="position-relative d-inline-block pt-3 pt-md-0">
-                                <label class="switch switch-primary me-0">
-                                    <span class="switch-label">{{ $plan->text_switch_left ?? '' }}</span>
-                                    <input type="checkbox" class="switch-input price-duration-toggler" checked />
-                                    <span class="switch-toggle-slider">
-                                        <span class="switch-on"></span>
-                                        <span class="switch-off"></span>
-                                    </span>
-                                    <span class="switch-label">{{ $plan->text_switch_right ?? '' }}</span>
-                                </label>
-                                <div class="pricing-plans-item position-absolute d-flex">
-                                    <img src="../../assets/img/front-pages/icons/pricing-plans-arrow.png"
-                                        alt="pricing plans arrow" class="scaleX-n1-rtl" />
-                                    <span class="fw-semibold mt-2 ms-1"> Save 25%</span>
-                                </div>
+
+
+
+
+                    <div class="content-cat">
+                        @foreach ($categoryy as $category)
+                            <div class="category  " style="background-color: #fbdddd"
+                                data-category-id="{{ $category->id }}">
+                                <div><i style="color: #7367f0" class="fa {{ $category->icon }}"></i></div>
+                                <div style="color: #7367f0" class="category-title">{{ $category->name }}</div>
                             </div>
-                        </div>
-                        <div class="row gy-4 pt-lg-3">
-                            <!-- Basic Plan: Start -->
-                            @foreach ($plan_pricing_data as $plan_data)
-                                <div class="col-xl-4 col-lg-6">
-
-                                    @if (optional($subscription)->plan_name === 'plan 1' && $plan_data->title === 'Basic')
-                                        <div class="card   border border-primary shadow-lg">
-                                            <div class="card-header">
-                                                <div class="text-center">
-                                                    <img src="{{ explode('/', $plan_data->image)[0] === 'uploads' ? asset('storage/' . $plan_data->image) ?? '' : asset($plan_data->image) ?? '' }}"
-                                                        alt="paper airplane icon" class="mb-4 pb-2" />
-                                                    <h4 class="mb-1">{{ $plan_data->title ?? '' }}</h4>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                        <span
-                                                            class="price-monthly h1 text-primary fw-bold mb-0">${{ $plan_data->monthly_price ?? '' }}</span>
-                                                        <span
-                                                            class="price-yearly h1 text-primary fw-bold mb-0 d-none">${{ $plan_data->yearly_price ?? '' }}</span>
-                                                        <sub class="h6 text-muted mb-0 ms-1">/mo</sub>
-                                                    </div>
-                                                    <div class="position-relative pt-2">
-                                                        <div class="price-yearly text-muted price-yearly-toggle d-none">$
-                                                            {{ $plan_data->total_price ?? '' }} / year</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="card-body">
-                                                <ul class="list-unstyled">
-                                                    @foreach ($plan_data->planLists ?? [] as $first)
-                                                        <li>
-                                                            <h5>
-                                                                <span
-                                                                    class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
-                                                                        class="ti ti-check ti-xs"></i></span>
-                                                                {{ $first->content_list ?? '' }}
-                                                            </h5>
-                                                        </li>
-                                                    @endforeach
-
-                                                </ul>
-                                                <div class="d-grid mt-4 pt-3">
-                                                    <a href="" class="btn btn-primary"
-                                                        id="paymentPlan1">{{ $pricingPlan->button_pricing_one ?? '' }}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @elseif(optional($subscription)->plan_name === 'plan 2' && $plan_data->title === 'Team')
-                                        <div class="card   border border-primary shadow-lg">
-                                            <div class="card-header">
-                                                <div class="text-center">
-                                                    <img src="{{ explode('/', $plan_data->image)[0] === 'uploads' ? asset('storage/' . $plan_data->image) ?? '' : asset($plan_data->image) ?? '' }}"
-                                                        alt="paper airplane icon" class="mb-4 pb-2" />
-                                                    <h4 class="mb-1">{{ $plan_data->title ?? '' }}</h4>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                        <span
-                                                            class="price-monthly h1 text-primary fw-bold mb-0">${{ $plan_data->monthly_price ?? '' }}</span>
-                                                        <span
-                                                            class="price-yearly h1 text-primary fw-bold mb-0 d-none">${{ $plan_data->yearly_price ?? '' }}</span>
-                                                        <sub class="h6 text-muted mb-0 ms-1">/mo</sub>
-                                                    </div>
-                                                    <div class="position-relative pt-2">
-                                                        <div class="price-yearly text-muted price-yearly-toggle d-none">$
-                                                            {{ $plan_data->total_price ?? '' }} / year</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="card-body">
-                                                <ul class="list-unstyled">
-                                                    @foreach ($plan_data->planLists ?? [] as $first)
-                                                        <li>
-                                                            <h5>
-                                                                <span
-                                                                    class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
-                                                                        class="ti ti-check ti-xs"></i></span>
-                                                                {{ $first->content_list ?? '' }}
-                                                            </h5>
-                                                        </li>
-                                                    @endforeach
-
-                                                </ul>
-                                                <div class="d-grid mt-4 pt-3">
-                                                    <a href="" class="btn btn-primary"
-                                                        id="paymentPlan1">{{ $pricingPlan->button_pricing_one ?? '' }}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @elseif(optional($subscription)->plan_name === 'plan 3' && $plan_data->title === 'Enterprise')
-                                        <div class="card   border border-primary shadow-lg">
-                                            <div class="card-header">
-                                                <div class="text-center">
-                                                    <img src="{{ explode('/', $plan_data->image)[0] === 'uploads' ? asset('storage/' . $plan_data->image) ?? '' : asset($plan_data->image) ?? '' }}"
-                                                        alt="paper airplane icon" class="mb-4 pb-2" />
-                                                    <h4 class="mb-1">{{ $plan_data->title ?? '' }}</h4>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                        <span
-                                                            class="price-monthly h1 text-primary fw-bold mb-0">${{ $plan_data->monthly_price ?? '' }}</span>
-                                                        <span
-                                                            class="price-yearly h1 text-primary fw-bold mb-0 d-none">${{ $plan_data->yearly_price ?? '' }}</span>
-                                                        <sub class="h6 text-muted mb-0 ms-1">/mo</sub>
-                                                    </div>
-                                                    <div class="position-relative pt-2">
-                                                        <div class="price-yearly text-muted price-yearly-toggle d-none">$
-                                                            {{ $plan_data->total_price ?? '' }} / year</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="card-body">
-                                                <ul class="list-unstyled">
-                                                    @foreach ($plan_data->planLists ?? [] as $first)
-                                                        <li>
-                                                            <h5>
-                                                                <span
-                                                                    class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
-                                                                        class="ti ti-check ti-xs"></i></span>
-                                                                {{ $first->content_list ?? '' }}
-                                                            </h5>
-                                                        </li>
-                                                    @endforeach
-
-                                                </ul>
-                                                <div class="d-grid mt-4 pt-3">
-                                                    <a href="" class="btn btn-primary"
-                                                        id="paymentPlan1">{{ $pricingPlan->button_pricing_one ?? '' }}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @else
-                                        <div class="card   ">
-                                            <div class="card-header">
-                                                <div class="text-center">
-                                                    <img src="{{ explode('/', $plan_data->image)[0] === 'uploads' ? asset('storage/' . $plan_data->image) ?? '' : asset($plan_data->image) ?? '' }}"
-                                                        alt="paper airplane icon" class="mb-4 pb-2" />
-                                                    <h4 class="mb-1">{{ $plan_data->title ?? '' }}</h4>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                        <span
-                                                            class="price-monthly h1 text-primary fw-bold mb-0">${{ $plan_data->monthly_price ?? '' }}</span>
-                                                        <span
-                                                            class="price-yearly h1 text-primary fw-bold mb-0 d-none">${{ $plan_data->yearly_price ?? '' }}</span>
-                                                        <sub class="h6 text-muted mb-0 ms-1">/mo</sub>
-                                                    </div>
-                                                    <div class="position-relative pt-2">
-                                                        <div class="price-yearly text-muted price-yearly-toggle d-none">$
-                                                            {{ $plan_data->total_price ?? '' }} / year</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="card-body">
-                                                <ul class="list-unstyled">
-                                                    @foreach ($plan_data->planLists ?? [] as $first)
-                                                        <li>
-                                                            <h5>
-                                                                <span
-                                                                    class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
-                                                                        class="ti ti-check ti-xs"></i></span>
-                                                                {{ $first->content_list ?? '' }}
-                                                            </h5>
-                                                        </li>
-                                                    @endforeach
-
-                                                </ul>
-                                                <div class="d-grid mt-4 pt-3">
-                                                    <a href="" class="btn btn-label-primary"
-                                                        id="{{ $plan_data->id }}">{{ $plan_data->text_button ?? '' }}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                </div>
-                            @endforeach
-
-
-
-                        </div>
+                        @endforeach
                     </div>
-                </section>
-            @else
-                <section id="landingPricing" class="section-py bg-body landing-pricing">
-                    <div class="container">
-                        <div class="text-center mb-3 pb-1">
-                            <span class="badge bg-label-primary">Our Categories</span>
-                        </div>
-                        <h3 class="text-center mb-1"><span class="section-title"> Tailored pricing products </span>
-                            displayed for you</h3>
-                        <p class="text-center mb-4 pb-3">
-                            {{ $plan->tertiary_description ?? '' }}<br />
-                            {{ $plan->four_description ?? '' }}
 
-                        </p>
-
-
-
-
-
-                        <div class="content-cat">
-                            @foreach ($categoryy as $category)
-                                <div class="category  " style="background-color: #fbdddd"
-                                    data-category-id="{{ $category->id }}">
-                                    <div><i style="color: #7367f0" class="fa {{ $category->icon }}"></i></div>
-                                    <div style="color: #7367f0" class="category-title">{{ $category->name }}</div>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <div class="gallery">
-
-                        </div>
-
-
+                    <div class="gallery">
 
                     </div>
-                </section>
-
-            @endif
 
 
-        @endif
+
+                </div>
+            </section>
+
+        
+
+
+        
         <!-- Pricing plans: End -->
 
 
@@ -1140,11 +715,8 @@
 
 
         <!-- Useful  Fun Facts : Start -->
-        @if ($enter_auth === 'true')
-            @if (auth()->check() &&
-                    (auth()->user()->role == 'admin' ||
-                        (auth()->user()->role == 'user' &&
-                            ($subscription && in_array($subscription->plan_name, ['plan 3', 'plan 2'])))))
+        
+            
                 @if ($fun_data)
                     <section id="landingFunFacts" class="section-py landing-fun-facts">
                         <div class="container">
@@ -1154,8 +726,8 @@
                                     <div class="col-sm-6 col-lg-3">
                                         <div class="card border {{ $fun['border_color'] }} shadow-none">
                                             <div class="card-body text-center">
-                                                <img src="{{  asset('funFile/' . $fun['image']) ?? ''}}"
-                                                    alt="laptop" class="mb-2" />
+                                                <img src="{{ asset('funFile/' . $fun['image']) ?? '' }}" alt="laptop"
+                                                    class="mb-2" />
                                                 <h5 class="h2 mb-1">{{ $fun['event'] }}</h5>
                                                 <p class="fw-medium mb-0">
                                                     {{ $fun['title'] }}<br />
@@ -1172,38 +744,8 @@
 
                 @endif
 
-            @endif
-        @else
-            @if ($fun_data)
-                <section id="landingFunFacts" class="section-py landing-fun-facts">
-                    <div class="container">
-                        <div class="row gy-3">
-
-                            @foreach ($fun_data ?? [] as $fun)
-                                <div class="col-sm-6 col-lg-3">
-                                    <div class="card border {{ $fun['border_color'] }} shadow-none">
-                                        <div class="card-body text-center">
-                                            <img src="{{  asset('funFile/' . $fun['image']) ?? ''}}"
-                                                alt="laptop" class="mb-2" />
-                                            <h5 class="h2 mb-1">{{ $fun['event'] }}</h5>
-                                            <p class="fw-medium mb-0">
-                                                {{ $fun['title'] }}<br />
-                                                {{ $fun['text'] }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-
-                        </div>
-                    </div>
-                </section>
-
-
-
-            @endif
-
-        @endif
+            
+        
 
         <!-- Fun Facts: End -->
 
@@ -1224,8 +766,8 @@
                     <div class="row gy-5">
                         <div class="col-lg-5">
                             <div class="text-center">
-                                <img src="{{  asset('faqFile/' . $faqs->image) ?? ''  }}"
-                                    alt="faq boy with logos" class="faq-image" />
+                                <img src="{{ asset('faqFile/' . $faqs->image) ?? '' }}" alt="faq boy with logos"
+                                    class="faq-image" />
                             </div>
                         </div>
                         @if ($faq)
@@ -1280,8 +822,8 @@
                                 class="btn btn-lg btn-primary">{{ $value->button_text_cta ?? '' }}</a>
                         </div>
                         <div class="col-lg-6 pt-lg-5 text-center text-lg-end">
-                            <img src="{{  asset('contactFile/' . $value->image_cta) ?? ''  }}"
-                                alt="cta dashboard" class="img-fluid" />
+                            <img src="{{ asset('contactFile/' . $value->image_cta) ?? '' }}" alt="cta dashboard"
+                                class="img-fluid" />
                         </div>
                     </div>
                 </div>
@@ -1298,9 +840,8 @@
                     <div class="row gy-4">
                         <div class="col-lg-5">
                             <div class="contact-img-box position-relative border p-2 h-100">
-                                <img src="{{  asset('contactFile/' . $value->image_contact) ?? '' }}"
-                                    alt="cta dashboard" alt="contact customer service"
-                                    class="contact-img w-100 scaleX-n1-rtl" />
+                                <img src="{{ asset('contactFile/' . $value->image_contact) ?? '' }}" alt="cta dashboard"
+                                    alt="contact customer service" class="contact-img w-100 scaleX-n1-rtl" />
                                 <div class="pt-3 px-4 pb-1">
                                     <div class="row gy-3 gx-md-4">
                                         <div class="col-md-6 col-lg-12 col-xl-6">
@@ -1401,15 +942,6 @@
 
 
         <script>
-            var reload = {{ $reload ? 'true' : 'false' }};
-            var reloaded = sessionStorage.getItem('reloaded');
-
-            const aa = 123;
-
-            if (reload && !reloaded) {
-                location.reload();
-                sessionStorage.setItem('reloaded', 'true');
-            }
             $(document).ready(function() {
                 const categories = document.querySelectorAll('.category');
 
@@ -1465,36 +997,39 @@
                                         galleryContainer.innerHTML += nextButton;
                                     }
                                     document.querySelectorAll('.buy-1').forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const productId = this.getAttribute('data-product-id');
-                    console.log("hi")
-                    addToCart(productId);
-                });
-            });
+                                        button.addEventListener('click', function(event) {
+                                            event.preventDefault();
+                                            const productId = this.getAttribute(
+                                                'data-product-id');
+                                            console.log("hi")
+                                            addToCart(productId);
+                                        });
+                                    });
 
                                 }
+
                                 function addToCart(productId) {
-            fetch(`/add-to-cart/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    },
-                    body: JSON.stringify({
-                        productId: productId
-                    })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        console.log("done");
-                    } else {
-                        console.error('Failed to add to cart');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
+                                    fetch(`/add-to-cart/${productId}`, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': document.querySelector(
+                                                    'meta[name="csrf-token"]').getAttribute(
+                                                    'content')
+                                            },
+                                            body: JSON.stringify({
+                                                productId: productId
+                                            })
+                                        })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                console.log("done");
+                                            } else {
+                                                console.error('Failed to add to cart');
+                                            }
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                }
 
                                 // Add event listener to the arrow button
                                 const arrowButton = document.querySelector('.arroww');
@@ -1526,7 +1061,7 @@
 
 
 
-            
+
 
 
 

@@ -22,6 +22,7 @@ class AuthenticationController extends Controller
     public function loginView(Request $request)
 
     {
+        ///hayde login kermel login/register to page front
         $showRegister = $request->get('showregister', false);
 
         return view('auth.index', ['toFront' => true]);
@@ -54,6 +55,7 @@ class AuthenticationController extends Controller
     } 
     public function loginAdmin(Request $request)
     {
+        //we use this to enter to dashboard..
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials) && Auth::user()->role === 'admin' ) {
@@ -65,7 +67,7 @@ class AuthenticationController extends Controller
 
             return redirect()->route('admin-data');
         }
-        return redirect()->route('login')->with('error', 'You are not the admin');
+        return redirect()->route('login');
   
     }
 
@@ -122,9 +124,7 @@ class AuthenticationController extends Controller
     {
         $user_id = Auth::id();
         $user =  User::where('id', $user_id)->first();
-        $user->update([
-            'show_profile' => 'no',
-        ]);
+        
 
         auth()->logout();
         return redirect()->route('front-page');
@@ -140,9 +140,7 @@ class AuthenticationController extends Controller
     {
         $user_id = Auth::id();
         $user = User::find($user_id);
-        $user->update([
-            'super_admin_setting' => 'no',
-        ]);
+        Auth::logout();
          return redirect()->route('front-page');
        
     }

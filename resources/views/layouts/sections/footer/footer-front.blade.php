@@ -5,15 +5,22 @@
         <div class="col-lg-5">
           @php
           $user_id = Auth::id();
-         $data = App\Models\AppData::where('user_id', $user_id)->first();
+         $data = App\Models\AppData::where('user_id', '1')->first();
         
      @endphp
          <a href="landing-page.html" class="app-brand-link">
+          
+          @if($data && $data->image)
+          <img src="{{ asset('images/' . $data->image) }}" style="width=32px; height:22px;">
+      @else
+          <img src="{{ asset('images/default.png') }}" style="width=32px; height:22px;">
+      @endif
             
-                 <img  src="{{ asset('images/' . $data->image) }}"
-                 style="width=32px; height:22px;"      >
-            
-             <span class="app-brand-text demo menu-text fw-bold ms-2 ps-1">{{$data->title}}</span>
+      @if($data && $data->title)
+      <span class="app-brand-text demo menu-text fw-bold ms-2 ps-1">{{ $data->title }}</span>
+  @else
+      <span class="app-brand-text demo menu-text fw-bold ms-2 ps-1">Default Title</span>
+  @endif
            </a>
           <p class="footer-text footer-logo-description mb-4">
             Most developer friendly & highly customisable Admin Dashboard Template.
@@ -43,11 +50,16 @@
           <ul class="list-unstyled">
            
             <li class="mb-3">
-              <a href="{{route('login-view')}}" target="_blank" class="footer-link">Login/Register</a>
+              <a  href="{{ route('product-page') }}" target="_blank" class="footer-link">Product</a>
             </li>
             <li class="mb-3">
-              <a href="{{ route('login') }}" target="_blank" class="footer-link">Dashboard</a>
+              <a  href="{{ route('product-cart-page') }}" target="_blank" class="footer-link">Checkout</a>
             </li>
+            <li class="mb-3">
+              <a href="{{ route('ecommerce-page') }}" target="_blank" class="footer-link">Dashboard</a>
+            </li>
+           
+            
           </ul>
         </div>
         <div class="col-lg-2 col-md-4 col-sm-6">
@@ -115,6 +127,9 @@
 
 
 <script>
+
+
+
     $(document).ready(function() {
         $('#sendEmailForm').submit(function(e) {
             e.preventDefault();

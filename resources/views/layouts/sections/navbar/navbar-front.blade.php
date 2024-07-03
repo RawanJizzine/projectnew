@@ -62,15 +62,23 @@
                 <!-- Mobile menu toggle: End -->
                 @php
                  $user_id = Auth::id();
-                $data = App\Models\AppData::where('user_id', $user_id)->first();
+                 
+                $data = App\Models\AppData::where('user_id', '1')->first();
                
             @endphp
                 <a href="landing-page.html" class="app-brand-link">
                    
-                        <img  src="{{ asset('images/' . $data->image) }}"
-                        style="width=32px; height:22px;"      >
+                    @if($data && $data->image)
+                    <img src="{{ asset('images/' . $data->image) }}" style="width=32px; height:22px;">
+                @else
+                    <img src="{{ asset('images/default.png') }}" style="width=32px; height:22px;">
+                @endif
                    
-                    <span class="app-brand-text demo menu-text fw-bold ms-2 ps-1">{{$data->title}}</span>
+                @if($data && $data->title)
+                <span class="app-brand-text demo menu-text fw-bold ms-2 ps-1">{{ $data->title }}</span>
+            @else
+                <span class="app-brand-text demo menu-text fw-bold ms-2 ps-1">Default Title</span>
+            @endif
                   </a>
             </div>
             <!-- Menu logo wrapper: End -->
@@ -147,71 +155,12 @@
             <!-- Toolbar: Start -->
             <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- navbar button: Start -->
-                @if (Auth::check() && Auth::user()->show_profile === 'yes')
+               
                     <li class="nav-item navbar-dropdown dropdown-user">
-                        <a class="nav-link dropdown-toggle hide-arrow" href="#" id="userDropdown">
-                            <div class="avatar avatar-online">
-                                <img src="{{ Auth::user()->image ? Auth::user()->image : asset('assets/img/avatars/1.png') }}"
-                                    alt class="h-auto rounded-circle">
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdownuser" aria-labelledby="userDropdown">
-                            <li>
-                                <h6 class="dropdown-header">Profile</h6>
-                            </li>
-                            <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li style="display: flex; justify-content: center; align-items: center;">
-                                <div>
-                                    <div class="avatar avatar-online">
-                                        <img src="{{ Auth::user()->image ? Auth::user()->image : asset('assets/img/avatars/1.png') }}"
-                                            alt class="h-auto rounded-circle">
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item">
-                                    <h6 class="align-middle">Name:</h6>
-                                    <span class="align-middle">{{ Auth::user()->username }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item">
-                                    <h6 class="align-middle">Email:</h6>
-                                    <span class="align-middle">{{ Auth::user()->email }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item">
-                                    <h6 class="align-middle">Role:</h6>
-                                    <span class="align-middle">{{ Auth::user()->role }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}">
-                                    <i class='ti ti-logout me-2'></i>
-                                    <span class="align-middle">Logout</span>
-                                </a>
-                            </li>
-                        </ul>
+                      
                     </li>
-                @else
-                    <a href="{{ route('login-view', ['showregister' => 'true']) }}" class="btn btn-primary"
-                        target="_blank">
-                        <span class="tf-icons ti ti-login scaleX-n1-rtl me-md-1"></span>
-                        <span class="d-none d-md-block">Login/Register</span>
-                    </a>
-                @endif
+                
+                   
 
                 @php
                     $carts = session('carts', []);
@@ -261,19 +210,29 @@
         if (isAuthenticated) {
 
             $.ajax({
-                url: '/admin',
+                url: '/dashboard/ecommerce',
                 method: 'GET',
                 success: function(response) {
 
-                    window.location.href = '/admin';
+                    window.location.href = '/dashboard/ecommerce';
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
                 }
             });
         } else {
+            $.ajax({
+                url: '/login-admin',
+                method: 'GET',
+                success: function(response) {
 
-            alert("Please register with a plan first.");
+                    window.location.href = '/login-admin';
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+           
         }
     });
     document.addEventListener('DOMContentLoaded', function() {

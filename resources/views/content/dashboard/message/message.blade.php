@@ -141,42 +141,7 @@
     </x-slot>
 </x-card>
 
-    <x-card>
-        <x-slot name="title">
-            Book Appointment
-        </x-slot>
-
-        <x-slot name="body">
-            <form action="{{ route('appointments.store') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="inst_date">Select Date</label>
-                    <div id="calendar" style="height: 400px; width: 420px;"></div>
-                    <input type="hidden" id="selectedDate" name="selectedDate">
-                </div>
-                <div class="form-group">
-                    <label for="time">Time</label>
-                    <select name="time" id="time" class="form-control" required>
-                        <option value="">Select Time</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="client_name">Client Name</label>
-                    <input type="text" name="client_name" id="client_name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="client_phone">Client Phone</label>
-                    <input type="phone" name="client_phone" id="client_phone" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="name_session">Name Of Session</label>
-                    <input type="name_session" name="name_session" id="name_session" class="form-control" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Book Appointment</button>
-            </form>
-        </x-slot>
-    </x-card>
+   
 
     <div class="modal fade" id="statusErrorsModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
     data-bs-keyboard="false">

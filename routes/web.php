@@ -183,3 +183,5 @@ Route::get('/dashboard/ecommerce', [EcommerceController::class, 'index'])->name(
 Route::post('/get-statics-info', [EcommerceController::class, 'getOrders'])->name('get-statics-info');
 Route::get('/appointmentsdate/{date}', [EcommerceController::class, 'getAppointmentsByDate']);
 Route::get('/orderdate/{date}', [EcommerceController::class, 'getOrdersByDate']);
+
+

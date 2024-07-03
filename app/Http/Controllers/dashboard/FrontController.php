@@ -29,8 +29,13 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\YourMailClass;
 use App\Mail\YourMailContact;
+use App\Models\Appointment;
 use App\Models\AppointmentTime;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Review;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller
 {
@@ -38,7 +43,7 @@ class FrontController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $data['enter_auth'] = 'false';
+       
         $data['home'] = HomeData::first();
         $data['feature'] = Feature::first();
         $data['feature_data'] = FeaturesData::where('features_id', $data['feature']->id)->get();
@@ -67,52 +72,96 @@ class FrontController extends Controller
         
         
     }
-    public function showFrontPage(Request $request)
-    {
-
-        $user_id = Auth::id();
-
-        $data['home'] = HomeData::where('user_id', $user_id ?? '')->first();
-        $data['feature'] = Feature::where('user_id', $user_id ?? '')->first();
-        $data['feature_data'] = FeaturesData::where('features_id', $data['feature']->id ?? '')->get();
-        $data['reviews'] = Review::where('user_id', $user_id ?? '')->first();
-        $data['review_data'] = ReviewsData::where('reviews_id', $data['reviews']->id ?? '')->get();
-        $data['logosdata'] = LogoData::where('user_id', $user_id ?? "")->get();
-        $data['team'] = TeamModel::where('user_id', $user_id ?? "")->first();
-        $data['team_data'] = TeamData::where('team_id', $data['team']->id ?? '')->get();
-        $data['fun_data'] = FunFact::where('user_id', $user_id ?? "")->get();
-        $data['faqs'] = Faq::where('user_id', $user_id ?? "")->first();
-        $data['faq'] = FaqModel::where('faq_id', $data['faqs']->id ?? '')->get();
-        $data['value'] = ContactData::where('user_id', $user_id ?? "")->first();
-        $data['plan'] = Plan::where('user_id', $user_id ?? "")->first();
-        $data['plan_pricing_data'] = PlanData::where('plan_id', $data['plan']->id ?? '')->with('planLists')->get();
-        $data['subscription'] = SubscriptionPlan::where('user_id', $userId ?? "")->first();
-        if($request->session()->get('reload')){
-            $data['reload']='true';
-           
-        }else{
-            $data['reload']=='false';
-        }
-        $user = User::find($user_id);
-
-        if ($user) {
-            $user->update([
-                'show_profile' => 'yes',
-            ]);
-        }
-        $data['enter_auth'] = 'true';
-
-        
-       
-        return view('content.front-page.front', $data);
-    }
+   
 
     public function adminDashboard()
     {
        
         $user_id = Auth::id();
-        $data['home'] = HomeData::where('user_id', $user_id ?? '')->first();
-        return view('content.dashboard.homeData.homeDataPage', $data);
+        $ordersQuery = Order::where('status', 'pending');
+        $ordersQuery->whereDate('created_at', Carbon::today());
+        $orders = $ordersQuery->get();
+        $totalAmount = $orders->sum('total_price');
+        $data['totalorderprice'] = $totalAmount;
+        $today = Carbon::today();
+        $todayEarnings = OrderItem::selectRaw('SUM(products.initial_price * order_items.quantity) as total_initial_price')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->whereDate('order_items.created_at', $today)
+            ->first();
+        $data['earnings'] = $todayEarnings;
+        $orderscompleted = Order::where('user_id', $user_id)
+            ->where('status', 'completed')->whereDate('created_at', Carbon::today());
+        $completed = $orderscompleted->count();
+        $data['orderscompleted'] = $completed;
+
+
+        $result = Order::select('user_id', DB::raw('COUNT(*) as completed_orders'), DB::raw('COUNT(DISTINCT customphoneNumber) as unique_phones'))
+            ->where('status', 'pending')
+            ->where('user_id', $user_id)
+            ->whereDate('created_at', $today)
+            ->groupBy('user_id')
+            ->first();
+
+        $customertoday = $result->unique_phones ?? "0";
+        $data['customer'] = $customertoday ?? "0";
+
+        $queryproduct = DB::table('products')->where('user_id', $user_id);
+
+
+        $countproduct = $queryproduct->count();
+        $data['countproduct'] = $countproduct;
+
+
+
+        $queryappointments = DB::table('appointments')->where('user_id', $user_id)->where('status', 'pending');
+        $queryappointments->whereDate('created_at', '=', now()->toDateString());
+        $countapp = $queryappointments->count();
+        $data['countapp'] = $countapp;
+
+        $sum = DB::table('appointments')
+            ->where('appointments.user_id', $user_id)
+            ->whereDate('appointments.created_at', '=', now()->toDateString())
+            ->join('features_data', function ($join) use ($user_id) {
+                $join->on('appointments.session_name', '=', 'features_data.title')
+                    ->where('features_data.user_id', '=', $user_id);
+            })
+            ->sum('features_data.price');
+        $data['amountapp'] = $sum;
+
+
+
+
+
+
+
+
+
+        /////////////////////////////
+
+
+        // Retrieve the appointment for the given user_id and today's date
+
+
+        // Retrieve the appointment for the given user_id, today's date, and status completed
+        $appointmenttable = Appointment::where('user_id', $user_id)
+            ->whereDate('date', $today)
+            ->where('status', 'completed')->get();
+        $data['appointmenttable'] = $appointmenttable;
+        //order table 
+        $orderstable = Order::where('user_id', $user_id)
+            ->whereDate('created_at', $today)
+            ->where('status', 'pending')
+            ->get();
+
+        if ($orders->isNotEmpty()) {
+            $data['orderstable'] = $orderstable;
+        } else {
+            $data['orderstable'] = null;
+        }
+
+
+        return view('content.dashboard.ecommerce.index', $data);
+       
     }
 
 

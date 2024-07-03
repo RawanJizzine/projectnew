@@ -132,7 +132,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <x-input name="title" id="title" placeholder="Title" type="text" label="Title"
+                                <x-input name="titleone" id="titleone" placeholder="Title" type="text" label="Title"
                                     value="{{ $features->title ?? '' }}" />
                             </div>
                         </div>

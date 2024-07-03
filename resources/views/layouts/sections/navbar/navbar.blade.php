@@ -151,7 +151,7 @@ $navbarDetached = ($navbarDetached ?? '');
               </li>
               {{-- @if (Auth::check()) --}}
               <li>
-                <a class="dropdown-item" href="{{ auth()->user()->super_admin_setting == 'yes' ? route('logout-dashboard-admin') : route('logout-dashboard') }}">
+                <a class="dropdown-item" href="{{ route('logout-dashboard-admin')  }}">
                   <i class='ti ti-logout me-2'></i>
                   <span class="align-middle">Logout</span>
               </a>

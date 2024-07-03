@@ -200,6 +200,7 @@
             <div class="card-header">
                 <div class="d-flex  mb-3">
                     <h5 style="margin-top: 0.4%;" class="card-title mb-0">Order Information</h5>
+                   <div style="margin-left: 4rem;"   >&nbsp;</div>
                     <small style="margin-left: 1.5%;" class="text-muted">
                         <input  type="date" id="dateorder" name="dateorder" class="form-control">
 
@@ -235,8 +236,9 @@
                                             <input type="text" value="{{ $data->customphoneNumber }}" name="title"
                                                 class="form-control" readonly>
                                         </td>
+                                        
                                         <td>
-                                            <textarea id="orderDetails" class="form-control" value="{{$data->customaddress   }}"  rows="4" readonly></textarea>
+                                            <textarea id="orderDetails" class="form-control" value="{{ $data->customaddress   }}"  rows="3" readonly>{{ $data->customaddress   }}      </textarea>
                                         </td>
                                         <td>
                                             <input type="text" value="{{ $data->total_price }}" name="date"
